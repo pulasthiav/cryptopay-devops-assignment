@@ -1,0 +1,12 @@
+{
+  "name": "cryptopay-assignment",
+  "version": "1.0.0",
+  "description": "DevOps Assignment",
+  "scripts": {
+    "build": "echo 'Building project...' && exit 0",
+    "test": "echo 'No tests specified yet' && exit 0",
+    "lint": "echo 'Linting complete' && exit 0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
