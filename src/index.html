@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoPay Live</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background-color: #1a1a2e; 
+            color: white;
+        }
+        .card {
+            background-color: #16213e;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        h1 { color: #e94560; }
+        .price-box {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #0f3460;
+            border-radius: 10px;
+        }
+        #btc-price, #eth-price { color: #4cc9f0; font-weight: bold; }
+        .refresh-btn {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .refresh-btn:hover { background-color: #ff2e63; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>🚀 CryptoPay Live</h1>
+        <p>Real-time Market Rates (LKR)</p>
+
+        <div class="price-box">
+            Bitcoin (BTC): <br>
+            <span id="btc-price">Loading...</span> LKR
+        </div>
+
+        <div class="price-box">
+            Ethereum (ETH): <br>
+            <span id="eth-price">Loading...</span> LKR
+        </div>
+
+        <button class="refresh-btn" onclick="fetchPrices()">Refresh Rates 🔄</button>
+        
+        <p style="font-size: 12px; margin-top: 20px; color: #888;">
+            Powered by CoinGecko API <br>
+            Deployed by DevOps Pipeline
+        </p>
+    </div>
+
+    <script>
+        // API එකෙන් දත්ත ගන්නා function එක
+        async function fetchPrices() {
+            const btcElement = document.getElementById('btc-price');
+            const ethElement = document.getElementById('eth-price');
+            
+            btcElement.innerText = "Updating...";
+            ethElement.innerText = "Updating...";
+
+            try {
+                // CoinGecko Free API එකට කතා කිරීම (LKR මිල ගණන් ඉල්ලීම)
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=lkr');
+                const data = await response.json();
+
+                // ලැබුණු දත්ත තිරයේ පෙන්වීම (Format කරලා)
+                btcElement.innerText = data.bitcoin.lkr.toLocaleString();
+                ethElement.innerText = data.ethereum.lkr.toLocaleString();
+                
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                btcElement.innerText = "Error!";
+            }
+        }
+
+        // පිටුව Load වුන ගමන් දත්ත ගන්න
+        fetchPrices();
+    </script>
+</body>
+</html>
