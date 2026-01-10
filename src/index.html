@@ -28,7 +28,8 @@
             background-color: #0f3460;
             border-radius: 10px;
         }
-        #btc-price, #eth-price { color: #4cc9f0; font-weight: bold; }
+        #btc-price { color: #f2a900; font-weight: bold; }
+        #eth-price { color: #4cc9f0; font-weight: bold; }
         .refresh-btn {
             background-color: #e94560;
             color: white;
@@ -37,6 +38,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: 0.3s;
         }
         .refresh-btn:hover { background-color: #ff2e63; }
     </style>
@@ -60,13 +62,12 @@
         <button class="refresh-btn" onclick="fetchPrices()">Refresh Rates 🔄</button>
         
         <p style="font-size: 12px; margin-top: 20px; color: #888;">
-            Powered by CoinGecko API <br>
+            Powered by CoinGecko API (Simulated Fallback)<br>
             Deployed by DevOps Pipeline
         </p>
     </div>
 
     <script>
-        // API එකෙන් දත්ත ගන්නා function එක
         async function fetchPrices() {
             const btcElement = document.getElementById('btc-price');
             const ethElement = document.getElementById('eth-price');
@@ -75,21 +76,26 @@
             ethElement.innerText = "Updating...";
 
             try {
-                // CoinGecko Free API එකට කතා කිරීම (LKR මිල ගණන් ඉල්ලීම)
+                // API එකට කතා කරනවා
                 const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=lkr');
-                const data = await response.json();
+                
+                if (!response.ok) throw new Error("API Limit Reached");
 
-                // ලැබුණු දත්ත තිරයේ පෙන්වීම (Format කරලා)
+                const data = await response.json();
                 btcElement.innerText = data.bitcoin.lkr.toLocaleString();
                 ethElement.innerText = data.ethereum.lkr.toLocaleString();
                 
             } catch (error) {
-                console.error("Error fetching data:", error);
-                btcElement.innerText = "Error!";
+                console.log("API Error, using fallback data.");
+                // API වැඩ නැත්නම් මේ බොරු ගණන් පෙන්වනවා (Simulated Mode)
+                setTimeout(() => {
+                    btcElement.innerText = "28,450,000"; // Fake BTC Price
+                    ethElement.innerText = "854,200";    // Fake ETH Price
+                    alert("Note: Showing simulated data (API Rate Limited)");
+                }, 1000);
             }
         }
 
-        // පිටුව Load වුන ගමන් දත්ත ගන්න
         fetchPrices();
     </script>
 </body>
