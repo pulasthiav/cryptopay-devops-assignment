@@ -145,6 +145,19 @@ app.get("/api/admin-stats", (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`CryptoPOS running at http://localhost:${port}`);
+// Admin Stats
+app.get('/api/admin-stats', (req, res) => {
+    // ... (Admin code එක) ...
 });
+
+// 👇 මෙන්න මේ කොටස තමයි ඔයා අලුතෙන් වෙනස් කරන්නේ 👇
+
+// Server Start Logic (Modified for Vercel)
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+}
+
+// මේක අනිවාර්යයි Vercel සඳහා
+module.exports = app;
