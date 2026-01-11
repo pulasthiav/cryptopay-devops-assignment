@@ -1,163 +1,100 @@
-const express = require("express");
-const axios = require("axios");
-const path = require("path");
+const express = require('express');
+const axios = require('axios');
+const path = require('path');
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
-// Memory Database
-let transactions = [];
-let totalIncomeLKR = 0;
+app.use(express.static(__dirname));
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/index.html"));
+// 1. Search API (Using CoinCap - Real Time & No Block)
+app.get('/api/search', async (req, res) => {
+    const query = req.query.q ? req.query.q.toLowerCase() : "";
+    
+    if (!query) return res.json([]);
+
+    try {
+        // CoinGecko වෙනුවට CoinCap පාවිච්චි කරයි
+        const response = await axios.get(`https://api.coincap.io/v2/assets?search=${query}&limit=10`);
+        
+        // CoinCap දත්ත අපේ Format එකට හරවා යැවීම
+        const coins = response.data.data.map(coin => ({
+            id: coin.id,
+            name: coin.name,
+            symbol: coin.symbol,
+            thumb: `https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png` // CoinCap Icon URL
+        }));
+        
+        res.json(coins);
+    } catch (error) {
+        console.error("Search API Error:", error.message);
+        res.status(500).json([]);
+    }
 });
 
-// Search API
-app.get("/api/search", async (req, res) => {
-  const query = req.query.q;
-  if (!query) return res.json([]);
-  try {
-    const response = await axios.get(
-      `https://api.coingecko.com/api/v3/search?query=${query}`
-    );
-    const coins = response.data.coins.slice(0, 7).map((coin) => ({
-      id: coin.id,
-      name: coin.name,
-      symbol: coin.symbol,
-      thumb: coin.thumb,
-    }));
-    res.json(coins);
-  } catch (error) {
-    res.status(500).json({ error: "Search failed" });
-  }
+// 2. Price Calculation API (Using CoinCap + ExchangeRate API)
+app.get('/api/calculate-payment', async (req, res) => {
+    const { amount, coin } = req.query;
+    
+    try {
+        // 1. Crypto මිල ගන්න (USD වලින්)
+        const cryptoResponse = await axios.get(`https://api.coincap.io/v2/assets/${coin}`);
+        const priceUSD = parseFloat(cryptoResponse.data.data.priceUsd);
+
+        // 2. Dollar Rate එක ගන්න (USD to LKR) - Real Time
+        let rateLKRPerUSD = 300; // Default fallback
+        try {
+            const currencyResponse = await axios.get('https://api.exchangerate-api.com/v4/latest/USD');
+            rateLKRPerUSD = currencyResponse.data.rates.LKR;
+        } catch (e) {
+            console.log("Currency API failed, using default 300");
+        }
+
+        // 3. ගණනය කිරීම් (Calculation)
+        const rateLKR = priceUSD * rateLKRPerUSD; // 1 Coin = ? LKR
+        
+        const totalLKR_Now = amount * 1.01;
+        const totalLKR_Inst = amount * 1.10;
+        const monthlyPaymentLKR = totalLKR_Inst / 3;
+        
+        const today = new Date();
+        const date2 = new Date(new Date().setMonth(today.getMonth() + 1));
+        const date3 = new Date(new Date().setMonth(today.getMonth() + 2));
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+
+        const schedule = [
+            { date: "Today (Now)", amountLKR: monthlyPaymentLKR.toFixed(2), cryptoAmount: (monthlyPaymentLKR / rateLKR).toFixed(6), status: "Due Now" },
+            { date: date2.toLocaleDateString('en-US', options), amountLKR: monthlyPaymentLKR.toFixed(2), cryptoAmount: "At Market Rate", status: "Auto-Schedule" },
+            { date: date3.toLocaleDateString('en-US', options), amountLKR: monthlyPaymentLKR.toFixed(2), cryptoAmount: "At Market Rate", status: "Auto-Schedule" }
+        ];
+
+        res.json({
+            coin: coin, 
+            rateLKR: rateLKR, // Real Time Price
+            options: {
+                payNow: { 
+                    lkrTotal: totalLKR_Now.toFixed(2), 
+                    usdTotal: ((totalLKR_Now / rateLKR) * priceUSD).toFixed(2), 
+                    cryptoTotal: (totalLKR_Now / rateLKR).toFixed(6) 
+                },
+                installments: { 
+                    totalLKR: totalLKR_Inst.toFixed(2), 
+                    monthlyPayment: monthlyPaymentLKR.toFixed(2), 
+                    schedule: schedule 
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("Calculation Error:", error.message);
+        res.status(500).json({ error: "Failed to fetch real-time data" });
+    }
 });
 
-// Price Calculation (Fiat Pegging Logic 🧠)
-app.get("/api/calculate-payment", async (req, res) => {
-  const { amount, coin } = req.query;
-
-  if (!amount || isNaN(amount) || amount <= 0) {
-    return res.status(400).json({ error: "Invalid Amount!" });
-  }
-
-  try {
-    const response = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=lkr,usd`
-    );
-
-    if (!response.data[coin])
-      return res.status(404).json({ error: "Coin not found" });
-
-    const rateLKR = response.data[coin].lkr;
-    const rateUSD = response.data[coin].usd;
-
-    // 1. Pay Now Logic (Full + 1%)
-    const totalLKR_Now = amount * 1.01;
-
-    // 2. Installment Logic (Full + 10%)
-    const totalLKR_Inst = amount * 1.1;
-    const monthlyPaymentLKR = totalLKR_Inst / 3;
-
-    // Date Calculation
-    const today = new Date();
-    const date2 = new Date(new Date().setMonth(today.getMonth() + 1));
-    const date3 = new Date(new Date().setMonth(today.getMonth() + 2));
-    const options = { year: "numeric", month: "short", day: "numeric" };
-
-    // --- FIAT PEGGING SCHEDULE ---
-    // අපි LKR අගය Lock කරනවා. Crypto අගය අද දවසට විතරක් හදනවා.
-    const schedule = [
-      {
-        date: "Today (Now)",
-        amountLKR: monthlyPaymentLKR.toFixed(2),
-        cryptoAmount: (monthlyPaymentLKR / rateLKR).toFixed(6), // අද ගෙවන Crypto ගාණ
-        status: "Due Now",
-      },
-      {
-        date: date2.toLocaleDateString("en-US", options),
-        amountLKR: monthlyPaymentLKR.toFixed(2),
-        cryptoAmount: "At Market Rate 🔄", // අනාගතයේ ගාණ දන්නේ නෑ (Dynamic)
-        status: "Auto-Schedule",
-      },
-      {
-        date: date3.toLocaleDateString("en-US", options),
-        amountLKR: monthlyPaymentLKR.toFixed(2),
-        cryptoAmount: "At Market Rate 🔄", // අනාගතයේ ගාණ දන්නේ නෑ (Dynamic)
-        status: "Auto-Schedule",
-      },
-    ];
-
-    res.json({
-      coin: coin,
-      rateLKR: rateLKR,
-      options: {
-        payNow: {
-          lkrTotal: totalLKR_Now.toFixed(2),
-          usdTotal: ((totalLKR_Now / rateLKR) * rateUSD).toFixed(2),
-          cryptoTotal: (totalLKR_Now / rateLKR).toFixed(6),
-        },
-        installments: {
-          totalLKR: totalLKR_Inst.toFixed(2),
-          monthlyPayment: monthlyPaymentLKR.toFixed(2),
-          schedule: schedule, // අර අලුත් Schedule එක යවනවා
-        },
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Error calculating price" });
-  }
-});
-
-// Record Sale
-app.get("/api/record-sale", (req, res) => {
-  const { amount, coin, plan } = req.query;
-  const sale = {
-    id: transactions.length + 1,
-    time: new Date().toLocaleTimeString(),
-    amount: parseFloat(amount),
-    coin: coin,
-    plan: plan,
-  };
-  transactions.push(sale);
-  const income =
-    plan === "Pay Now" ? parseFloat(amount) : parseFloat(amount) / 3;
-  totalIncomeLKR += income;
-
-  res.json({ status: "Saved" });
-});
-
-// Admin Stats
-app.get("/api/admin-stats", (req, res) => {
-  // 1. Password එක Header එකෙන් ගන්නවා
-  const providedPass = req.headers["x-admin-password"];
-  const REAL_PASS = "admin123"; // මුදලාලිගේ Password එක
-
-  // 2. Password එක හරිද බලනවා
-  if (providedPass !== REAL_PASS) {
-    return res.status(401).json({ error: "Unauthorized! Wrong Password." });
-  }
-
-  // 3. හරි නම් විතරක් Data යවනවා
-  res.json({
-    totalIncome: totalIncomeLKR.toFixed(2),
-    totalCount: transactions.length,
-    recentSales: transactions.slice(-5).reverse(),
-  });
-});
-
-// Admin Stats
-app.get('/api/admin-stats', (req, res) => {
-    // ... (Admin code එක) ...
-});
-
-// 👇 මෙන්න මේ කොටස තමයි ඔයා අලුතෙන් වෙනස් කරන්නේ 👇
-
-// Server Start Logic (Modified for Vercel)
+// Server Start Logic
 if (require.main === module) {
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
     });
 }
-
-// මේක අනිවාර්යයි Vercel සඳහා
 module.exports = app;
