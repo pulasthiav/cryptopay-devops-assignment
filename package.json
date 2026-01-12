@@ -2,7 +2,7 @@
   "name": "cryptopay-assignment",
   "version": "1.0.0",
   "description": "DevOps Assignment",
-  "main": "src/server.js",
+  "main": "api/server.js",
   "scripts": {
     "start": "node api/server.js",
     "build": "echo 'No build step needed'",
