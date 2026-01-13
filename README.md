@@ -1,4 +1,4 @@
-# CryptoPay Gateway Simulator
+# CryptoPOS System (Final Version)
 
 ![CI Pipeline](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/workflows/CI%20Pipeline/badge.svg)
 ![Deploy to Production](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/workflows/Deploy%20to%20Production/badge.svg)
