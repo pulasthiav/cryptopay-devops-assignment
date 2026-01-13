@@ -351,7 +351,6 @@
         type="number"
         id="billAmount"
         placeholder="Enter Bill Amount (LKR)"
-        
       />
 
       <div style="margin-bottom: 20px">
@@ -435,6 +434,16 @@
           >
         </div>
         <div class="amount-big">Rs. <span id="nowLKR"></span></div>
+        <div
+          style="
+            font-size: 15px;
+            color: #007bff;
+            font-weight: 600;
+            margin-bottom: 6px;
+          "
+        >
+          <span id="nowCrypto"></span> <span id="nowCoinSymbol"></span>
+        </div>
         <small style="color: #666">Immediate Deduction</small>
       </div>
 
@@ -718,6 +727,10 @@
           ).src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Pay_${paymentData.coin}`;
           document.getElementById("nowLKR").innerText =
             paymentData.options.payNow.lkrTotal;
+          document.getElementById("nowCrypto").innerText =
+            paymentData.options.payNow.cryptoTotal;
+          document.getElementById("nowCoinSymbol").innerText =
+            paymentData.coin.toUpperCase();
           document.getElementById("instMonthly").innerText =
             paymentData.options.installments.monthlyPayment;
 
