@@ -377,6 +377,13 @@
       <button class="btn-main" onclick="generateQR()">
         Generate QR Code 🏁
       </button>
+      <p id="loading-txt" style="display:none; color: #007bff; font-weight: bold; margin-top: 10px; animation: blink 1s infinite;">
+        ⏳ Processing Transaction... Please wait
+    </p>
+
+    <style>
+    @keyframes blink { 50% { opacity: 0.5; } }
+    </style>
       <p
         onclick="openPassModal()"
         style="
@@ -703,6 +710,7 @@
       }
 
       async function generateQR() {
+      document.getElementById("loading-txt"),style.display = "block";
         const amt = document.getElementById("billAmount").value;
         if (!amt || amt <= 0) {
           showAlert("Invalid Amount", "Enter a valid amount", "error");
@@ -757,6 +765,7 @@
           document.querySelector(".active").classList.remove("active");
           document.getElementById("customer-screen").classList.add("active");
         } catch (err) {
+          document.getElementById("loading-txt"),style.display = "none";
           showAlert("Error", "Check Connection", "error");
         }
       }
