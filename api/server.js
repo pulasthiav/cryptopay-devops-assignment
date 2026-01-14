@@ -3,6 +3,7 @@ const axios = require("axios");
 const path = require("path");
 const cors = require("cors"); // Added CORS for safety
 const app = express();
+app.use(express.static('public'));
 const port = 3001;
 
 app.use(cors());
@@ -13,8 +14,8 @@ let transactions = [];
 let totalIncomeLKR = 0;
 
 // Serve the HTML file
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Search API (Wrapper to avoid exposing API Key logic later)
