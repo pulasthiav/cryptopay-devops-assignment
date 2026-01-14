@@ -1,0 +1,13 @@
+# Node dependencies
+node_modules/
+
+# Vercel outputs
+.vercel
+.output/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env

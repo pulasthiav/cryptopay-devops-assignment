@@ -2,11 +2,16 @@
   "name": "cryptopay-assignment",
   "version": "1.0.0",
   "description": "DevOps Assignment",
+  "main": "api/server.js",
   "scripts": {
-    "build": "echo 'Building project...' && exit 0",
-    "test": "echo 'No tests specified yet' && exit 0",
-    "lint": "echo 'Linting complete' && exit 0"
+    "start": "node api/server.js",
+    "build": "echo 'No build step needed'",
+    "lint": "echo 'No lint step needed'",
+    "test": "echo 'No tests needed'"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "cors": "^2.8.5"
+  }
 }
