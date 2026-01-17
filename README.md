@@ -1,94 +1,89 @@
-
-# CryptoPOS System (DevOps Assignment)
+# CryptoPOS System
 
 ![CI Pipeline](https://github.com/pulasthiav/cryptopay-devops-assignment/workflows/CI%20Pipeline/badge.svg)
 ![Deploy to Production](https://github.com/pulasthiav/cryptopay-devops-assignment/workflows/Deploy%20to%20Production/badge.svg)
 
+## Group Information
 
+- Student 1: Pulasthi Avinash - ITBIN-2313-0014 - Role: Group Leader / DevOps Engineer
+- Student 2: Savisara Dissanayake - ITBIN-2313-0034 - Role: Frontend Developer
+- Student 3: Isuru Chathushka - ITBIN-2313-0082 - Role: Backend Developer
 
-# Group Information
+## Project Description
 
-Student 1: Pulasthi Avinash - ITBIN-2313-0014 - Role: DevOps Engineer & Team Lead
+CryptoPay Gateway Simulator is a web-based cryptocurrency Point-of-Sale (POS) system designed to simulate real-world crypto transactions. It allows merchants to generate bills in LKR, converts them to major cryptocurrencies (BTC, ETH, SOL, USDT) via live rates, and offers flexible payment options including full immediate payments or 3-month installment plans. The system also includes a secure Admin Dashboard for tracking revenue and a receipt generation feature.
 
-Student 2: Isuru Chathushka - ITBIN-2313-0082 - Role: Backend & Security Developer
+## Live Deployment
 
-Student 3:Savisara Dissanayake - ITBIN-2313-0034 - Role: Frontend Developer / QA
+Live URL: https://cryptopay-devops-assignment.vercel.app/
 
+## Technologies Used
 
+- Frontend: HTML5, CSS3, JavaScript (Vanilla)
+- Backend: Node.js, Express.js
+- DevOps & Tools: Docker, GitHub Actions, ESLint, Prettier
+- External APIs: CoinGecko API (for live crypto rates), QRServer API
+- Deployment Platform: Vercel
 
-# Project Description
+## Features
 
-CryptoPay Gateway Simulator is a web-based cryptocurrency Point-of-Sale (POS) system designed to simulate real-world crypto transactions. Merchants can generate bills in LKR, convert them into major cryptocurrencies (BTC, ETH, SOL, USDT) using live exchange rates, and process secure transactions through a centralized system. The platform also includes an Admin Dashboard for monitoring revenue and transaction history.
+### Application Features
 
+- Merchant POS Interface: Real-time bill entry and coin selection (BTC, ETH, SOL, USDT).
+- Live Rate Calculation: Automatic conversion of LKR to Crypto based on real-time market data.
+- Flexible Payment Plans:
+  - Pay Full: Immediate payment with a 1% fee.
+  - 3-Month Plan: Installment option with a 10% fee and auto-scheduling.
+- Admin Dashboard: Password-protected area to view Total Income and Recent Transactions.
+- Digital Receipt System: Generates printable receipts with payment breakdown.
 
+### DevOps & Bonus Features (Above & Beyond)
 
-# Live Deployment
+- Automated Code Quality: Integrated ESLint and Prettier to automatically enforce code standards and formatting on every commit.
+- Docker Containerization: Application includes a Dockerfile and is fully containerized, exposing port 3001.
+- Advanced CI/CD: Pipeline includes automated steps for Linting, Docker Build validation, and Vercel Deployment.
 
-Live URL : (https://cryptopay-devops-assignment.vercel.app/)
+## Branch Strategy
 
+We implemented the following branching strategy in accordance with industry best practices:
 
+- main - Production-ready code (Protected branch, auto-deploys to Vercel).
+- develop - Integration branch for merging features before production.
+- feature/\*\* - Individual feature branches for each developer (e.g., feature/payment-logic, feature/docker-setup).
 
-# Technologies Used
+## Individual Contributions
 
-Frontend: HTML5, CSS3, Vanilla JavaScript
-Backend: Node.js, Express.js
-DevOps: GitHub Actions (CI/CD), Vercel
-API: CoinGecko Public API
+### Pulasthi Avinash (Group Leader)
 
+- DevOps Setup: Configured Docker, ESLint, and Prettier for the project ecosystem.
+- CI/CD Pipeline: Created .github/workflows/ci.yml for automated testing/linting and deploy.yml for Vercel deployment.
+- Repository Management: Initialized the Git repository, configured .gitignore, and managed branch protection rules.
+- Conflict Resolution: Successfully resolved merge conflicts between feature branches and the develop branch (documented in git history).
+- Leadership & Support: Coordinated the team, managed code integrations, and provided technical support for both frontend and backend tasks.
 
+### Savisara Dissanayake
 
-# Features
+- UI/UX Design: Designed the index.html layout and responsive CSS styles.
+- Frontend Interactivity: Developed the JavaScript logic for the Merchant POS and Customer screens.
+- Receipt Generation: Implemented the dynamic receipt rendering and print functionality.
 
-Merchant POS Interface:** Real-time bill entry and cryptocurrency selection
-Secure Admin Dashboard:** Backend-based PIN authentication
-Live Rate Calculation:** Fetches real-time crypto prices
-Transaction History:** Tracks all payments (in-memory storage)
+### Isuru Chathushka
 
-
-# Branch Strategy
-
-We followed the Gitflow branching strategy as required:
-
- `main` - Production-ready code (protected, auto-deploys to Vercel)
- `develop` - Integration and testing branch
- `feature/**` - Individual feature branches
-
-
-
-# Individual Contributions
-
-# Pulasthi Avinash (DevOps Engineer)
-
-Initialized Git repository and project structure
-Configured Vercel deployment
-Implemented CI/CD pipelines using GitHub Actions
-Developed core backend APIs and managed branch integrations
-
-# Isuru Chathushka (Backend & Security)
-
-Implemented secure Admin PIN verification on the backend
-Fixed critical `ENOENT` errors by correcting Express static paths
-Stabilized the development environment by fixing missing npm scripts
-Improved backend security against client-side manipulation
-
-# Student 3 (Frontend / QA)
-
-Designed responsive POS user interface
-Tested payment logic and UI responsiveness 
-Assisted with usability and bug verification
-
+- Backend Logic: Implemented server.js API endpoints for rate calculation and transaction recording.
+- Admin Dashboard: Developed the password-protected area to view Total Income and Recent Transactions.
+- API Integration: Handled the integration with CoinGecko and QRServer APIs.
 
 ## Setup Instructions
 
-# Prerequisites
+### Prerequisites
 
-Node.js (version 18 or higher)
-Git
-npm
+- Node.js (version 18 or higher)
+- Git
+- npm (Node Package Manager)
 
-# Installation
+### Installation
 
-
+```bash
 # Clone the repository
 git clone https://github.com/pulasthiav/cryptopay-devops-assignment.git
 
@@ -98,24 +93,49 @@ cd cryptopay-devops-assignment
 # Install dependencies
 npm install
 
-# Start the server
-npm start
+# Run Code Quality Check (Linting)
+npm run lint
 
+# Run development server
+npm run dev
+```
 
+### Run with Docker
 
-# Merge Conflict Resolution (Assignment Requirement)
+Since the application is fully containerized, you can run it using Docker without installing Node.js locally.
 
-As part of the DevOps assignment, a merge conflict resolution was intentionally demonstrated.
+```bash
+# Build the Docker image
+docker build -t cryptopay-app .
 
-Scenario: A conflict occurred in `README.md` when both the DevOps Engineer and Backend Developer modified the *Group Information* section in separate branches.
+# Run the container
+docker run -p 3001:3001 cryptopay-app
+```
 
-Issue: Git detected conflicting changes during merge due to edits on the same lines.
+## CI/CD Pipeline & Deployment Strategy
 
-Resolution Process:
+This project uses GitHub Actions to automate the integration and deployment processes. The pipeline is divided into two main workflows:
 
-  1. Identified conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
-  2. Reviewed both versions carefully
-  3. Selected the correct combined content
-  4. Removed conflict markers and committed the resolved file
+### 1. Continuous Integration (CI) - `ci.yml`
 
-This demonstrated proper version control practices and collaborative development workflow.
+Trigger: Runs on every push to `main`, `develop`, `feature/*` and on Pull Requests.
+
+Jobs & Steps:
+
+1.  Environment Setup: Sets up an Ubuntu runner with Node.js version 18.
+2.  Dependency Installation: Runs `npm install` to ensure all packages are available.
+3.  Automated Code Quality Check: Executes `npm run lint`. This ensures that all code adheres to ESLint and Prettier standards. If there are formatting errors, the build fails immediately.
+4.  Docker Build Validation: Runs `docker build .` to verify that the application can be successfully containerized.
+
+### 2. Continuous Deployment (CD) - `deploy.yml`
+
+Trigger: Runs only when code is successfully merged or pushed to the `main` branch.
+
+Jobs & Steps:
+
+1.  Checkout: Retrieves the latest production-ready code.
+2.  Vercel Deployment: Uses the `amondnet/vercel-action` to automatically deploy the application to Vercel's production environment.
+
+```
+
+```

@@ -6,12 +6,19 @@
   "scripts": {
     "start": "node api/server.js",
     "build": "echo 'No build step needed'",
-    "lint": "echo 'No lint step needed'",
+    "lint": "eslint .",
+    "format": "prettier --write .",
     "test": "echo 'No tests needed'"
   },
   "dependencies": {
-    "express": "^4.18.2",
     "axios": "^1.6.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.0"
   }
 }
