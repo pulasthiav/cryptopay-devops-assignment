@@ -30,3 +30,6 @@ jobs:
 
       - name: Run tests
         run: npm test || echo "Tests completed"
+	
+	- name: Build Docker Image
+        run: docker build . --file Dockerfile --tag my-app:$(date +%s)
