@@ -1,4 +1,4 @@
-# CryptoPOS System (Final Version)
+# CryptoPOS System
 
 ![CI Pipeline](https://github.com/pulasthiav/cryptopay-devops-assignment/workflows/CI%20Pipeline/badge.svg)
 ![Deploy to Production](https://github.com/pulasthiav/cryptopay-devops-assignment/workflows/Deploy%20to%20Production/badge.svg)
