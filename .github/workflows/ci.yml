@@ -22,14 +22,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run linter
-        run: npm run lint || echo "Lint check completed"
+      - name: Run Code Quality Check (Lint)
+        run: npm run lint
 
-      - name: Build project
-        run: npm run build || echo "Build completed"
-
-      - name: Run tests
-        run: npm test || echo "Tests completed"
-	
-	- name: Build Docker Image
+      - name: Build Docker Image
         run: docker build . --file Dockerfile --tag my-app:$(date +%s)
