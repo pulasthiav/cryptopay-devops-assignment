@@ -378,6 +378,26 @@
         Generate QR Code 🏁
       </button>
       <p
+        id="loading-txt"
+        style="
+          display: none;
+          color: #007bff;
+          font-weight: bold;
+          margin-top: 10px;
+          animation: blink 1s infinite;
+        "
+      >
+        ⏳ Processing Transaction... Please wait
+      </p>
+
+      <style>
+        @keyframes blink {
+          50% {
+            opacity: 0.5;
+          }
+        }
+      </style>
+      <p
         onclick="openPassModal()"
         style="
           margin-top: 25px;

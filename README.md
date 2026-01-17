@@ -3,7 +3,7 @@
 ![CI Pipeline](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/workflows/CI%20Pipeline/badge.svg)
 ![Deploy to Production](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/workflows/Deploy%20to%20Production/badge.svg)
 
-## Group Information
+# Project Description
 
 - **Student 1:** Pulasthi Avinash - [INSERT STUDENT ID] - Role: [e.g., DevOps Engineer / Backend Developer]
 - **Student 2:** [INSERT NAME] - [INSERT STUDENT ID] - Role: [e.g., Frontend Developer]
@@ -43,7 +43,7 @@ CryptoPay Gateway Simulator is a web-based cryptocurrency Point-of-Sale (POS) sy
 - [cite_start]`develop` - Integration branch for merging features before production[cite: 215].
 - [cite_start]`feature/**` - Individual feature branches for each developer (e.g., `feature/payment-logic`, `feature/ui-design`)[cite: 216].
 
-## Individual Contributions
+# Technologies Used
 
 ### Pulasthi Avinash
 
@@ -76,14 +76,15 @@ CryptoPay Gateway Simulator is a web-based cryptocurrency Point-of-Sale (POS) sy
 
 ```bash
 # Clone the repository
-[cite_start]git clone [https://github.com/](https://github.com/)[YOUR_USERNAME]/[REPO_NAME].git [cite: 236]
+git clone https://github.com/pulasthiav/cryptopay-devops-assignment.git
 
 # Navigate to project directory
-cd [REPO_NAME] [cite: 238]
+cd cryptopay-devops-assignment
 
 # Install dependencies
-npm install [cite: 240]
+npm install
 
 # Run development server
 npm run dev [cite: 242]
 ```
+ 

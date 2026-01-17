@@ -3,6 +3,7 @@ const axios = require('axios');
 const path = require('path');
 const cors = require('cors'); // Added CORS for safety
 const app = express();
+app.use(express.static('public'));
 const port = 3001;
 
 app.use(cors());
