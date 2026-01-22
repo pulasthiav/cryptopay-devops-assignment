@@ -681,8 +681,8 @@
       }
 
       function executeTransaction() {
-        closeConfirmModal();
-        completePayment(pendingPlan); // Proceed to real payment
+        completePayment(pendingPlan);
+        closeConfirmModal();; 
       }
 
       // --- CORE LOGIC ---
