@@ -272,11 +272,15 @@
         }
         #receipt-area {
           position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 20px;
+          width: 400px;
           border: none;
           padding: 0;
+        }
+        .no-print {
+          display: none !important;
         }
       }
     </style>
@@ -644,9 +648,9 @@
           .map(
             (s) =>
               `<div style="border-bottom:1px solid #eee; padding:10px 0; font-size:14px; display:flex; justify-content:space-between;">
-                    <span>${
-                      new Date(s.time).toLocaleString()
-                    }</span> <span><b>${s.coin.toUpperCase()}</b></span> <span>Rs.${
+                    <span>${new Date(
+                      s.time
+                    ).toLocaleString()}</span> <span><b>${s.coin.toUpperCase()}</b></span> <span>Rs.${
                       s.amount
                     } (${s.plan})</span>
                 </div>`
@@ -682,7 +686,7 @@
 
       function executeTransaction() {
         completePayment(pendingPlan);
-        closeConfirmModal();; 
+        closeConfirmModal();
       }
 
       // --- CORE LOGIC ---
