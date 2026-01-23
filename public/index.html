@@ -645,7 +645,7 @@
             (s) =>
               `<div style="border-bottom:1px solid #eee; padding:10px 0; font-size:14px; display:flex; justify-content:space-between;">
                     <span>${
-                      s.time
+                      new Date(s.time).toLocaleString()
                     }</span> <span><b>${s.coin.toUpperCase()}</b></span> <span>Rs.${
                       s.amount
                     } (${s.plan})</span>
