@@ -33,6 +33,26 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// --- Search API (මේක තමයි අඩුවෙලා තිබුනේ) ---
+app.get('/api/search', async (req, res) => {
+  const query = req.query.q;
+  if (!query) return res.json([]);
+  try {
+    const response = await axios.get(
+      `https://api.coingecko.com/api/v3/search?query=${query}`
+    );
+    const coins = response.data.coins.slice(0, 7).map((coin) => ({
+      id: coin.id,
+      name: coin.name,
+      symbol: coin.symbol,
+      thumb: coin.thumb,
+    }));
+    res.json(coins);
+  } catch (error) {
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
+
 app.get('/api/calculate-payment', async (req, res) => {
   const { amount, coin } = req.query;
   try {
@@ -76,7 +96,7 @@ app.get('/api/admin-stats', async (req, res) => {
   if (req.headers['x-admin-password'] !== process.env.ADMIN_PASSWORD) {
     return res.status(401).send();
   }
-  const transactions = await Transaction.find().sort({ time: -1 }); // LIMIT removed
+  const transactions = await Transaction.find().sort({ time: -1 });
   const total = transactions.reduce((acc, t) => acc + (t.amount || 0), 0);
   res.json({ totalIncome: total.toFixed(2), recentSales: transactions });
 });
