@@ -3,26 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoPOS | Professional</title>
+    <title>CryptoPOS | Secure Gateway</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+      /* --- 1. MODERN VARIABLES (Fintech Palette) --- */
       :root {
         --font-family: 'Inter', sans-serif;
+        
+        /* Light Mode */
         --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         --card-bg: rgba(255, 255, 255, 0.95);
         --text-main: #1e293b;
         --text-muted: #64748b;
         --border-color: #e2e8f0;
-        --primary: #3b82f6;
+        --primary: #3b82f6; /* Blue-500 */
         --primary-hover: #2563eb;
         --danger: #ef4444;
+        --success: #10b981;
+        --shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
         --radius: 16px;
       }
 
       body.dark-mode {
+        /* Dark Mode (Slate Palette) */
         --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         --card-bg: rgba(30, 41, 59, 0.95);
         --text-main: #f8fafc;
@@ -30,381 +36,611 @@
         --border-color: #334155;
         --primary: #60a5fa;
         --primary-hover: #3b82f6;
+        --shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
       }
 
+      /* --- 2. GLOBAL RESET --- */
       * { box-sizing: border-box; margin: 0; padding: 0; }
+      
       body {
         font-family: var(--font-family);
         background: var(--bg-gradient);
         background-attachment: fixed;
         color: var(--text-main);
         min-height: 100vh;
-        display: flex; justify-content: center; align-items: center; padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
         transition: color 0.3s ease;
       }
 
+      /* --- 3. THEME TOGGLE --- */
       .theme-btn {
-        position: fixed; top: 20px; right: 20px;
-        background: var(--card-bg); border: 1px solid var(--border-color);
-        width: 40px; height: 40px; border-radius: 50%;
-        cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center;
+        position: fixed;
+        top: 20px; right: 20px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        width: 44px; height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: 0.3s;
         z-index: 100;
       }
+      .theme-btn:hover { transform: scale(1.1); }
 
+      /* --- 4. MAIN CARD CONTAINER --- */
       .app-container {
-        width: 100%; max-width: 420px;
+        width: 100%;
+        max-width: 420px;
         background: var(--card-bg);
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         border-radius: var(--radius);
-        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow);
         border: 1px solid rgba(255,255,255,0.1);
-        padding: 30px; position: relative;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
       }
 
-      .header h2 { font-size: 22px; font-weight: 700; margin-bottom: 5px; text-align: center;}
-      .header p { font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 25px; }
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .header h2 { font-size: 22px; font-weight: 700; color: var(--text-main); }
+      .header p { font-size: 14px; color: var(--text-muted); margin-top: 5px; }
 
-      /* Inputs */
-      .input-group { position: relative; margin-bottom: 20px; }
-      .input-group span { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-weight: bold; color: var(--text-muted); }
+      /* --- 5. INPUTS & FORMS --- */
+      label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .input-wrapper { margin-bottom: 24px; position: relative; }
+      
+      /* Professional Big Input */
+      .money-input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .currency-symbol {
+        position: absolute;
+        left: 15px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
       input[type="number"] {
-        width: 100%; padding: 15px 15px 15px 45px;
-        font-size: 24px; font-weight: 700;
-        background: transparent; border: 2px solid var(--border-color);
-        border-radius: 12px; color: var(--text-main); outline: none;
+        width: 100%;
+        padding: 16px 16px 16px 50px; /* Space for symbol */
+        font-size: 24px;
+        font-weight: 700;
+        background: transparent;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        color: var(--text-main);
+        transition: 0.2s;
+        outline: none;
       }
-      input:focus { border-color: var(--primary); }
+      input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+
       input[type="text"], input[type="password"] {
-        width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border-color);
-        border-radius: 10px; color: var(--text-main); margin-bottom: 10px;
-      }
-
-      /* Buttons & Chips */
-      .coin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
-      .coin-chip {
-        padding: 10px; text-align: center; border: 1px solid var(--border-color);
-        border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--text-muted);
-        cursor: pointer; background: transparent;
-      }
-      .coin-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-      .btn {
-        width: 100%; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 600;
-        cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%;
+        padding: 14px;
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        color: var(--text-main);
+        font-size: 15px;
+        outline: none;
         transition: 0.2s;
       }
-      .btn-primary { background: var(--primary); color: white; }
-      .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); }
-      .btn-sm { padding: 8px 15px; font-size: 13px; width: auto; }
+      input[type="text"]:focus { border-color: var(--primary); }
 
-      /* Modals */
-      .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
-        display: none; justify-content: center; align-items: center; z-index: 999;
-      }
-      .modal-content {
-        background: var(--card-bg); padding: 25px; border-radius: 20px;
-        width: 90%; max-width: 350px; text-align: center;
-        border: 1px solid var(--border-color);
-      }
-      .modal-content.large { max-width: 600px; max-height: 80vh; overflow-y: auto; }
-
-      /* Table */
-      .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-      .data-table th { text-align: left; padding: 8px; border-bottom: 1px solid var(--border-color); color: var(--text-muted); }
-      .data-table td { padding: 8px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
-
-      /* Search Results Styling (NEW FIX) */
-      #searchResults {
-        display: none;
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        max-height: 200px;
-        overflow-y: auto;
+      /* --- 6. COIN SELECTOR (Chips) --- */
+      .coin-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
         margin-bottom: 15px;
-        background: var(--card-bg);
-        position: absolute; /* Ensures it floats on top */
-        width: calc(100% - 60px); /* Adjust width */
-        z-index: 1000; /* Force on top */
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       }
-      .search-item {
-        padding: 12px;
+      .coin-chip {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
         cursor: pointer;
-        border-bottom: 1px solid var(--border-color);
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        transition: background 0.2s;
-        color: var(--text-main); /* Ensure text is visible */
+        transition: all 0.2s ease;
+        background: transparent;
       }
-      .search-item:hover { background: rgba(59, 130, 246, 0.1); }
-      .search-item b { color: var(--text-main); }
-      .search-item small { color: var(--text-muted); }
+      .coin-chip:hover { border-color: var(--primary); color: var(--primary); }
+      .coin-chip.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+      }
 
-      /* Screens & Receipt */
-      .screen { display: none; animation: fadeIn 0.4s ease; }
-      .screen.active { display: block; }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      /* --- 7. BUTTONS --- */
+      .btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: 0.2s;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+      }
+      .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
       
-      #receipt-area { display: none; background: white; color: #333; padding: 30px; margin-top: 20px; }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+      }
+      .btn-outline:hover { background: var(--border-color); color: var(--text-main); }
+
+      .btn-text {
+        background: none;
+        color: var(--text-muted);
+        font-size: 13px;
+        margin-top: 15px;
+        text-decoration: none;
+      }
+      .btn-text:hover { color: var(--text-main); text-decoration: underline; }
+
+      /* --- 8. PAYMENT OPTIONS CARDS --- */
+      .option-card {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .option-card:hover {
+        border-color: var(--primary);
+        background: rgba(59, 130, 246, 0.03);
+      }
+      .option-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+      .badge {
+        font-size: 10px; font-weight: 700;
+        padding: 4px 8px; border-radius: 20px;
+        text-transform: uppercase;
+      }
+      .badge-yellow { background: #fef3c7; color: #d97706; }
+      .badge-red { background: #fee2e2; color: #dc2626; }
+      
+      .option-amount { font-size: 22px; font-weight: 700; color: var(--text-main); }
+      .option-sub { font-size: 13px; color: var(--primary); font-weight: 500; }
+
+      /* --- 9. RECEIPT (Paper Effect) --- */
+      #receipt-area {
+        display: none;
+        background: white; /* Always white like paper */
+        color: #1e293b; /* Always dark text */
+        padding: 30px;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-top: 20px;
+      }
+      /* Zigzag bottom effect */
+      #receipt-area::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: radial-gradient(circle, transparent, transparent 50%, white 50%, white 100%) -7px -2px / 15px 15px repeat-x;
+      }
+      .receipt-line { border-bottom: 1px dashed #cbd5e1; margin: 15px 0; }
+      
       @media print {
         body * { visibility: hidden; }
         #receipt-area, #receipt-area * { visibility: visible; }
-        #receipt-area { position: absolute; left: 0; top: 0; width: 100%; }
+        #receipt-area {
+          position: absolute; left: 0; top: 0; width: 100%;
+          box-shadow: none; margin: 0;
+        }
         .no-print { display: none !important; }
       }
+
+      /* --- 10. UTILS & ANIMATIONS --- */
+      .screen { display: none; animation: fadeIn 0.4s ease; }
+      .screen.active { display: block; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+      .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+        display: none; justify-content: center; align-items: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        width: 90%; max-width: 340px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid var(--border-color);
+      }
+      .hidden { display: none; }
     </style>
   </head>
   <body>
 
-    <button class="theme-btn" onclick="document.body.classList.toggle('dark-mode')">🌙</button>
+    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
 
     <div class="app-container">
       
       <div id="seller-screen" class="screen active">
         <div class="header">
-          <h2>Merchant POS</h2>
-          <p>Secure Crypto Gateway</p>
-        </div>
-        
-        <div class="input-group">
-          <span>Rs.</span>
-          <input type="number" id="billAmount" placeholder="0.00">
+          <h2>Merchant Point</h2>
+          <p>Secure Crypto Payment Gateway</p>
         </div>
 
-        <div class="coin-grid">
-          <div class="coin-chip" onclick="selectCoin('bitcoin', this)">BTC</div>
-          <div class="coin-chip" onclick="selectCoin('ethereum', this)">ETH</div>
-          <div class="coin-chip" onclick="selectCoin('solana', this)">SOL</div>
-          <div class="coin-chip" onclick="selectCoin('tether', this)">USDT</div>
+        <div class="input-wrapper">
+          <label>Enter Bill Amount</label>
+          <div class="money-input-container">
+            <span class="currency-symbol">Rs.</span>
+            <input type="number" id="billAmount" placeholder="0.00">
+          </div>
         </div>
 
-        <div style="position: relative;">
-            <input type="text" id="coinSearch" placeholder="🔍 Search coins (e.g. Doge)" onkeyup="searchCoins()">
-            <div id="searchResults"></div>
+        <div class="input-wrapper">
+          <label>Select Currency</label>
+          <div class="coin-grid">
+            <div class="coin-chip" onclick="quickSelect('bitcoin', this)">BTC</div>
+            <div class="coin-chip" onclick="quickSelect('ethereum', this)">ETH</div>
+            <div class="coin-chip" onclick="quickSelect('solana', this)">SOL</div>
+            <div class="coin-chip" onclick="quickSelect('tether', this)">USDT</div>
+          </div>
+          <input type="text" id="coinSearch" placeholder="🔍 Search other coins (e.g. doge)" onkeyup="searchCoins()">
+          <div id="searchResults" style="background:var(--card-bg); border:1px solid var(--border-color); position:absolute; width:100%; z-index:10; max-height:150px; overflow-y:auto; display:none; border-radius:10px; margin-top:5px;"></div>
+          <div id="selName" style="color:var(--primary); font-size:12px; font-weight:600; margin-top:5px; height:15px;"></div>
         </div>
-        
-        <button class="btn btn-primary" onclick="generateQR()">Generate QR 🚀</button>
+
+        <button class="btn btn-primary" onclick="generateQR()">
+          <span>Generate Payment QR</span> 🚀
+        </button>
         
         <center>
-          <p id="loading" style="display:none; color:var(--primary); font-size:13px; margin-top:10px;">Processing...</p>
-          <button onclick="document.getElementById('pass-modal').style.display='flex'" style="background:none; border:none; margin-top:15px; color:var(--text-muted); cursor:pointer;">🔒 Admin</button>
+          <p id="loading-txt" style="color:var(--primary); font-size:13px; font-weight:600; margin-top:15px; display:none;">
+            ⏳ Connecting to Blockchain...
+          </p>
+          <button class="btn btn-text" onclick="openPassModal()">🔒 Admin Dashboard</button>
         </center>
       </div>
 
       <div id="customer-screen" class="screen">
-        <div class="header"><h2>Payment</h2><p>Scan to Pay</p></div>
-        <center><img id="qrImage" src="" width="160" style="border-radius:10px; border:1px solid #ddd;"></center>
-        
-        <div style="margin-top:20px;">
-          <button class="btn btn-outline" style="margin-bottom:10px; justify-content:space-between;" onclick="confirmPay('Pay Now')">
-             <span>Pay Full</span> <b style="color:var(--text-main)">Rs. <span id="lblFull">0</span></b>
-          </button>
-          <button class="btn btn-outline" style="justify-content:space-between;" onclick="confirmPay('Installment')">
-             <span>3-Month Plan</span> <b style="color:var(--text-main)">Rs. <span id="lblInst">0</span>/mo</b>
-          </button>
+        <div class="header">
+          <h2>Complete Payment</h2>
+          <p>Scan to pay with <strong id="payCoinName" style="color:var(--primary)"></strong></p>
         </div>
-        <button class="btn btn-outline" style="margin-top:15px; color:var(--danger); border-color:var(--danger);" onclick="location.reload()">Cancel</button>
+
+        <center style="margin-bottom:20px;">
+          <div style="background:white; padding:10px; border-radius:16px; display:inline-block; border:1px solid #e2e8f0;">
+            <img id="qrImage" src="" width="160" style="display:block; border-radius:8px;">
+          </div>
+        </center>
+
+        <label>Choose Payment Plan</label>
+
+        <div class="option-card" onclick="askConfirmation('Pay Now')">
+          <div class="option-header">
+            <span style="font-weight:600; font-size:15px;">Pay Full Amount</span>
+            <span class="badge badge-yellow">1% Fee</span>
+          </div>
+          <div class="option-amount">Rs. <span id="nowLKR">0</span></div>
+          <div class="option-sub">≈ <span id="nowCrypto">0</span> <span id="nowCoinSymbol"></span></div>
+        </div>
+
+        <div class="option-card" onclick="askConfirmation('Installment')">
+          <div class="option-header">
+            <span style="font-weight:600; font-size:15px;">3-Month Installment</span>
+            <span class="badge badge-red">10% Fee</span>
+          </div>
+          <div class="option-amount">Rs. <span id="instMonthly">0</span> <span style="font-size:14px; color:var(--text-muted); font-weight:400">/mo</span></div>
+          <div id="scheduleList" style="font-size:12px; margin-top:10px; color:var(--text-muted);"></div>
+        </div>
+
+        <button class="btn btn-outline" onclick="location.reload()" style="color:var(--danger); border-color:var(--danger);">Cancel Transaction</button>
       </div>
 
       <div id="admin-screen" class="screen">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-           <h2>📊 Dashboard</h2>
-           <button onclick="location.reload()" style="background:none; border:none; font-size:20px; color:var(--text-main); cursor:pointer;">✕</button>
+        <div class="header" style="text-align:left; display:flex; justify-content:space-between; align-items:center;">
+          <h2>📊 Dashboard</h2>
+          <button onclick="location.reload()" style="background:none; border:none; color:var(--text-main); font-size:20px; cursor:pointer;">✕</button>
         </div>
         
-        <div style="background:linear-gradient(135deg, #1e293b, #0f172a); color:white; padding:20px; border-radius:16px; margin-bottom:20px;">
-           <span style="opacity:0.8; font-size:12px;">TOTAL REVENUE</span>
-           <h1 id="revenueDisplay" style="margin:5px 0;">0.00</h1>
+        <div style="background:linear-gradient(135deg, #1e293b, #0f172a); color:white; padding:25px; border-radius:16px; margin-bottom:20px;">
+          <span style="font-size:13px; opacity:0.8; text-transform:uppercase; letter-spacing:1px;">Total Revenue</span>
+          <h1 id="adminRevenue" style="font-size:36px; margin-top:5px;">0.00</h1>
+          <span style="font-size:12px; color:#4ade80;">● Live Updates</span>
         </div>
 
-        <h4>Recent Sales</h4>
-        <div id="salesList" style="margin-bottom:15px;"></div>
+        <h4 style="margin-bottom:15px;">Recent Sales</h4>
+        <div id="salesList" style="max-height:200px; overflow-y:auto; font-size:14px;"></div>
         
-        <button class="btn btn-outline btn-sm" onclick="openHistoryTable()">📄 See Full History Table</button>
-        <button class="btn btn-outline" onclick="location.reload()" style="margin-top:15px;">Log Out</button>
+        <button class="btn btn-outline" onclick="location.reload()" style="margin-top:20px;">Log Out</button>
       </div>
 
       <div id="receipt-area">
-        <center><h3>PAYMENT SUCCESS</h3><p>Transaction Complete</p></center>
-        <hr style="border:1px dashed #ccc; margin:15px 0;">
-        <p><b>Date:</b> <span id="rDate"></span></p>
-        <p><b>Paid:</b> Rs. <span id="rAmount"></span></p>
-        <p id="rPlan"></p>
-        <div class="no-print" style="margin-top:20px; text-align:center;">
-          <button class="btn btn-primary" onclick="window.print()">Print</button>
-          <a onclick="location.reload()" style="display:block; margin-top:10px; cursor:pointer; color:var(--primary);">New Order</a>
+        <center>
+          <div style="border:2px solid #1e293b; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;">
+            <span style="font-size:20px;">✔</span>
+          </div>
+          <h3 style="margin:0; font-weight:800; letter-spacing:-0.5px;">PAYMENT SUCCESS</h3>
+          <p style="font-size:12px; color:#64748b; margin-bottom:15px;">TRANSACTION ID: #TXN8829</p>
+        </center>
+        
+        <div class="receipt-line"></div>
+        
+        <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:8px;">
+          <span style="color:#64748b;">Date</span>
+          <span style="font-weight:600;" id="rDate"></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:8px;">
+          <span style="color:#64748b;">Original Amount</span>
+          <span style="font-weight:600;">Rs. <span id="rOriginal"></span></span>
+        </div>
+
+        <div id="receipt-schedule" style="background:#f1f5f9; padding:10px; border-radius:8px; margin:15px 0; font-size:13px;"></div>
+
+        <div style="display:flex; justify-content:space-between; font-size:18px; font-weight:800; margin-top:10px;">
+          <span>PAID NOW</span>
+          <span>Rs. <span id="rPaidNow"></span></span>
+        </div>
+        
+        <div class="no-print" style="margin-top:25px; text-align:center;">
+          <button class="btn btn-primary" onclick="window.print()" style="margin-bottom:10px;">🖨️ Print Receipt</button>
+          <a onclick="location.reload()" style="cursor:pointer; font-size:13px; color:var(--primary); text-decoration:underline;">Start New Order</a>
         </div>
       </div>
 
     </div>
 
-    <div id="pass-modal" class="modal-overlay">
+    <div id="custom-alert" class="modal-overlay">
       <div class="modal-content">
-        <h3>Admin Login</h3>
-        <input type="password" id="adminPass" placeholder="Enter PIN" style="text-align:center; margin:15px 0;">
-        <button class="btn btn-primary" onclick="loginAdmin()">Login</button>
-        <button class="btn btn-outline" style="margin-top:10px;" onclick="document.getElementById('pass-modal').style.display='none'">Cancel</button>
+        <div style="font-size:40px; margin-bottom:10px;">⚠️</div>
+        <h3 id="alert-title" style="margin-bottom:5px;">Notice</h3>
+        <p id="alert-msg" style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">Message</p>
+        <button class="btn btn-outline" onclick="closeAlert()">Okay</button>
+      </div>
+    </div>
+
+    <div id="password-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3 style="margin-bottom:5px;">Admin Login</h3>
+        <p style="color:var(--text-muted); font-size:13px; margin-bottom:15px;">Enter security PIN to access revenue</p>
+        <input type="password" id="adminPassInput" placeholder="PIN Code" style="text-align:center; margin-bottom:15px;">
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-outline" onclick="closePassModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="submitPassword()">Access</button>
+        </div>
       </div>
     </div>
 
     <div id="confirm-modal" class="modal-overlay">
       <div class="modal-content">
-        <h3>Confirm Payment</h3>
-        <h2 style="color:var(--primary); margin:10px 0;">Rs. <span id="confAmount"></span></h2>
-        <p id="confPlan" style="margin-bottom:20px; font-size:13px;"></p>
-        <button class="btn btn-primary" onclick="processTxn()">Confirm Pay</button>
-        <button class="btn btn-outline" style="margin-top:10px;" onclick="document.getElementById('confirm-modal').style.display='none'">Back</button>
-      </div>
-    </div>
-
-    <div id="history-modal" class="modal-overlay">
-      <div class="modal-content large">
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-           <h3>Full History</h3>
-           <button onclick="document.getElementById('history-modal').style.display='none'" style="background:none; border:none; cursor:pointer; font-size:18px;">✕</button>
+        <h3 style="margin-bottom:5px;">Confirm?</h3>
+        <p id="confirm-msg" style="color:var(--text-muted); font-size:14px; margin-bottom:15px;">Proceed with this transaction?</p>
+        <div style="background:var(--bg-gradient); padding:10px; border-radius:8px; margin-bottom:20px;">
+          <div style="font-size:12px; color:var(--text-muted);">AMOUNT TO PAY</div>
+          <div style="font-size:20px; font-weight:700; color:var(--primary);">Rs. <span id="conf-amount"></span></div>
+          <div style="font-size:12px; margin-top:5px; font-weight:600;" id="conf-plan"></div>
         </div>
-        <div style="overflow-x:auto;">
-           <table class="data-table">
-              <thead><tr><th>Time</th><th>Coin</th><th>Amount</th><th>Plan</th></tr></thead>
-              <tbody id="historyBody"></tbody>
-           </table>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-outline" onclick="closeConfirmModal()">Back</button>
+          <button class="btn btn-primary" onclick="executeTransaction()">Confirm Pay</button>
         </div>
       </div>
     </div>
 
     <script>
-      let selectedCoin = '', payData = {}, pendingPlan = '', allSales = [];
-      let searchTimeout;
-
-      function selectCoin(id, el) {
-         selectedCoin = id;
-         document.querySelectorAll('.coin-chip').forEach(c => c.classList.remove('active'));
-         el.classList.add('active');
-         // Clear Search if a chip is selected
-         document.getElementById('coinSearch').value = '';
-         document.getElementById('searchResults').style.display = 'none';
+      // 1. THEME LOGIC
+      function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.querySelector('.theme-btn');
+        btn.innerHTML = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
       }
 
-      // --- NEW: Better Search Function with Debounce & Symbols ---
+      // 2. STATE
+      let selectedCoinId = '';
+      let paymentData = {};
+      let pendingPlan = '';
+
+      // 3. UI HELPERS
+      function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'seller-screen') document.getElementById('receipt-area').style.display = 'none';
+      }
+
+      function showAlert(title, msg) {
+        document.getElementById('alert-title').innerText = title;
+        document.getElementById('alert-msg').innerText = msg;
+        document.getElementById('custom-alert').style.display = 'flex';
+      }
+      function closeAlert() { document.getElementById('custom-alert').style.display = 'none'; }
+
+      function openPassModal() { 
+        document.getElementById('password-modal').style.display = 'flex';
+        document.getElementById('adminPassInput').value = '';
+        document.getElementById('adminPassInput').focus();
+      }
+      function closePassModal() { document.getElementById('password-modal').style.display = 'none'; }
+
+      // 4. CORE FUNCTIONS
+      function quickSelect(id, el) {
+        selectedCoinId = id;
+        document.querySelectorAll('.coin-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('selName').innerText = id.toUpperCase();
+      }
+
       async function searchCoins() {
-         const q = document.getElementById('coinSearch').value;
-         const resBox = document.getElementById('searchResults');
-         
-         // 1. Clear previous timer (Stop rapid requests)
-         clearTimeout(searchTimeout);
-
-         if(q.length < 2) { 
-             resBox.style.display='none'; 
-             return; 
-         }
-
-         // 2. Wait 500ms before calling API
-         searchTimeout = setTimeout(async () => {
-             try {
-                const res = await fetch(`/api/search?q=${q}`);
-                const data = await res.json();
-                
-                resBox.innerHTML = ''; 
-                resBox.style.display='block';
-                
-                if(data.length === 0) {
-                    resBox.innerHTML = '<div style="padding:10px; text-align:center; color:gray;">No coins found</div>';
-                    return;
-                }
-
-                data.forEach(c => {
-                   // Added Symbol Display: ${c.name} (${c.symbol})
-                   resBox.innerHTML += `
-                   <div class="search-item" onclick="selectCoin('${c.id}', {classList:{add:()=>{}}}); document.getElementById('coinSearch').value='${c.name}'; document.getElementById('searchResults').style.display='none';">
-                        <img src="${c.thumb}" width="25" style="border-radius:50%"> 
-                        <div>
-                            <b>${c.name}</b> 
-                            <small style="text-transform:uppercase;">(${c.symbol})</small>
-                        </div>
-                   </div>`;
-                });
-             } catch(e){
-                 console.error("Search Error:", e);
-             }
-         }, 500); // 500ms delay
+        const q = document.getElementById('coinSearch').value;
+        const resBox = document.getElementById('searchResults');
+        if(q.length < 2) { resBox.style.display='none'; return; }
+        
+        try {
+          const res = await fetch(`/api/search?q=${q}`);
+          const data = await res.json();
+          resBox.innerHTML = '';
+          resBox.style.display = 'block';
+          data.forEach(c => {
+            const div = document.createElement('div');
+            div.style.padding = '10px';
+            div.style.borderBottom = '1px solid var(--border-color)';
+            div.style.cursor = 'pointer';
+            div.style.display = 'flex'; div.style.alignItems = 'center'; div.style.gap = '10px';
+            div.innerHTML = `<img src="${c.thumb}" width="20"> <span>${c.name}</span>`;
+            div.onclick = () => {
+              quickSelect(c.id, { classList: { add: ()=>{} } }); // Fake element for quickSelect
+              document.getElementById('selName').innerText = c.name.toUpperCase();
+              resBox.style.display = 'none';
+              document.getElementById('coinSearch').value = '';
+            };
+            resBox.appendChild(div);
+          });
+        } catch(e) {}
       }
 
       async function generateQR() {
-         const amt = document.getElementById('billAmount').value;
-         if(!amt || !selectedCoin) return alert('Enter amount & select coin');
-         document.getElementById('loading').style.display='block';
-         try {
-            const res = await fetch(`/api/calculate-payment?amount=${amt}&coin=${selectedCoin}`);
-            payData = await res.json();
-            document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Pay_${payData.coin}`;
-            document.getElementById('lblFull').innerText = payData.options.payNow.lkrTotal;
-            document.getElementById('lblInst').innerText = payData.options.installments.monthlyPayment;
-            
-            document.getElementById('loading').style.display='none';
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('customer-screen').classList.add('active');
-         } catch(e) { alert('Error'); }
-      }
+        const amt = document.getElementById('billAmount').value;
+        if(!amt || amt <= 0) return showAlert("Error", "Please enter a valid amount.");
+        if(!selectedCoinId) return showAlert("Error", "Please select a cryptocurrency.");
 
-      function confirmPay(plan) {
-         pendingPlan = plan;
-         const val = plan === 'Installment' ? payData.options.installments.monthlyPayment : payData.options.payNow.lkrTotal;
-         document.getElementById('confAmount').innerText = val;
-         document.getElementById('confPlan').innerText = plan;
-         document.getElementById('confirm-modal').style.display='flex';
-      }
+        document.getElementById('loading-txt').style.display = 'block';
+        
+        try {
+          const res = await fetch(`/api/calculate-payment?amount=${amt}&coin=${selectedCoinId}`);
+          if(!res.ok) throw new Error();
+          paymentData = await res.json();
 
-      async function processTxn() {
-         const val = document.getElementById('confAmount').innerText;
-         await fetch(`/api/record-sale?amount=${val}&coin=${payData.coin}&plan=${pendingPlan}`);
-         document.getElementById('confirm-modal').style.display='none';
-         
-         document.getElementById('rDate').innerText = new Date().toLocaleDateString();
-         document.getElementById('rAmount').innerText = val;
-         document.getElementById('rPlan').innerText = pendingPlan;
-         
-         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-         document.getElementById('receipt-area').style.display='block';
-      }
-
-      async function loginAdmin() {
-         const pw = document.getElementById('adminPass').value;
-         const res = await fetch('/api/admin-stats', { headers: { 'x-admin-password': pw } });
-         if(res.status === 401) { alert('Wrong PIN'); return; }
-         
-         const data = await res.json();
-         allSales = data.recentSales;
-         document.getElementById('revenueDisplay').innerText = data.totalIncome;
-
-         const list = document.getElementById('salesList');
-         list.innerHTML = '';
-         allSales.slice(0, 5).forEach(s => {
-            list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid var(--border-color); font-size:14px;">
-               <div><b>${s.coin.toUpperCase()}</b> <span style="font-size:12px; color:var(--text-muted)">${new Date(s.time).toLocaleTimeString()}</span></div>
-               <div>Rs. ${s.amount}</div>
+          // Fill Data
+          document.getElementById('payCoinName').innerText = paymentData.coin.toUpperCase();
+          document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Pay_${paymentData.coin}_${amt}`;
+          
+          document.getElementById('nowLKR').innerText = paymentData.options.payNow.lkrTotal;
+          document.getElementById('nowCrypto').innerText = paymentData.options.payNow.cryptoTotal;
+          document.getElementById('nowCoinSymbol').innerText = paymentData.coin.toUpperCase();
+          
+          document.getElementById('instMonthly').innerText = paymentData.options.installments.monthlyPayment;
+          
+          // Render Schedule Preview
+          const schedList = document.getElementById('scheduleList');
+          schedList.innerHTML = '';
+          paymentData.options.installments.schedule.forEach((item, i) => {
+            schedList.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+              <span>${item.date}</span> <span>Rs. ${item.amountLKR}</span>
             </div>`;
-         });
+          });
 
-         document.getElementById('pass-modal').style.display='none';
-         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-         document.getElementById('admin-screen').classList.add('active');
+          document.getElementById('loading-txt').style.display = 'none';
+          showScreen('customer-screen');
+
+        } catch(e) {
+          document.getElementById('loading-txt').style.display = 'none';
+          showAlert("Connection Error", "Could not reach server.");
+        }
       }
 
-      function openHistoryTable() {
-         const tbody = document.getElementById('historyBody');
-         tbody.innerHTML = '';
-         allSales.forEach(s => {
-            tbody.innerHTML += `<tr>
-               <td>${new Date(s.time).toLocaleString()}</td>
-               <td>${s.coin.toUpperCase()}</td>
-               <td>Rs. ${s.amount}</td>
-               <td>${s.plan}</td>
-            </tr>`;
-         });
-         document.getElementById('history-modal').style.display='flex';
+      function askConfirmation(plan) {
+        pendingPlan = plan;
+        const isInst = plan === 'Installment';
+        const amt = isInst ? paymentData.options.installments.monthlyPayment : paymentData.options.payNow.lkrTotal;
+        
+        document.getElementById('conf-amount').innerText = amt;
+        document.getElementById('conf-plan').innerText = isInst ? '3-Month Plan (1st Installment)' : 'One-time Full Payment';
+        document.getElementById('confirm-modal').style.display = 'flex';
+      }
+
+      function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; }
+
+      async function executeTransaction() {
+        const isInst = pendingPlan === 'Installment';
+        const paidAmount = isInst ? paymentData.options.installments.monthlyPayment : paymentData.options.payNow.lkrTotal;
+        
+        await fetch(`/api/record-sale?amount=${paidAmount}&coin=${paymentData.coin}&plan=${pendingPlan}`);
+        
+        // Receipt Data
+        document.getElementById('rDate').innerText = new Date().toLocaleDateString();
+        document.getElementById('rOriginal').innerText = document.getElementById('billAmount').value;
+        document.getElementById('rPaidNow').innerText = paidAmount;
+        
+        const recArea = document.getElementById('receipt-schedule');
+        if(isInst) {
+          recArea.innerHTML = '<strong>PLAN: 3-MONTH INSTALLMENT</strong><br><br>';
+          paymentData.options.installments.schedule.forEach((item, i) => {
+            recArea.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+              <span>${item.date}</span> <span>Rs. ${item.amountLKR} ${i===0?'(PAID)':''}</span>
+            </div>`;
+          });
+        } else {
+          recArea.innerHTML = '<strong>METHOD: FULL PAYMENT</strong><br>Status: Complete';
+        }
+
+        closeConfirmModal();
+        document.getElementById('customer-screen').classList.remove('active');
+        document.getElementById('receipt-area').style.display = 'block';
+      }
+
+      async function submitPassword() {
+        const pw = document.getElementById('adminPassInput').value;
+        const res = await fetch('/api/admin-stats', { headers: { 'x-admin-password': pw } });
+        
+        if(res.status === 401) {
+          alert('Wrong PIN'); return;
+        }
+        
+        const data = await res.json();
+        document.getElementById('adminRevenue').innerText = data.totalIncome;
+        
+        const list = document.getElementById('salesList');
+        list.innerHTML = '';
+        data.recentSales.forEach(s => {
+          list.innerHTML += `<div style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between;">
+            <div>
+              <div style="font-weight:bold;">${s.coin.toUpperCase()}</div>
+              <div style="font-size:11px; opacity:0.7;">${new Date(s.time).toLocaleTimeString()}</div>
+            </div>
+            <div style="text-align:right;">
+              <div>Rs. ${s.amount}</div>
+              <div style="font-size:11px; opacity:0.7;">${s.plan}</div>
+            </div>
+          </div>`;
+        });
+
+        closePassModal();
+        showScreen('admin-screen');
       }
     </script>
   </body>
