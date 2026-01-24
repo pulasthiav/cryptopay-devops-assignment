@@ -336,22 +336,43 @@
       }
 
       @media print {
+        /* 1. Body එකේ තියෙන Flexbox සහ පාට අයින් කරනවා */
+        body {
+          display: block !important;
+          background: white !important;
+          height: auto !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+
+        /* 2. හැමදේම හංගනවා (Hide Everything) */
         body * {
           visibility: hidden;
         }
+
+        /* 3. Receipt එක විතරක් පෙන්නනවා (Show Receipt) */
         #receipt-area,
         #receipt-area * {
           visibility: visible;
         }
+
+        /* 4. Receipt එක කොළේ උඩටම (Top) ගන්නවා */
         #receipt-area {
           position: absolute;
           left: 0;
           top: 0;
           width: 100%;
-          box-shadow: none;
           margin: 0;
+          padding: 20px;
+          border: none !important;
+          box-shadow: none !important;
+          background: white !important;
+          color: black !important; /* අකුරු කලු පාට කරනවා */
         }
-        .no-print {
+
+        /* 5. Buttons සහ අනවශ්‍ය දේවල් හංගනවා */
+        .no-print,
+        .theme-btn {
           display: none !important;
         }
       }
