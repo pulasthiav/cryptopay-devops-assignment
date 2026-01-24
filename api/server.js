@@ -76,7 +76,7 @@ app.get('/api/admin-stats', async (req, res) => {
   if (req.headers['x-admin-password'] !== process.env.ADMIN_PASSWORD) {
     return res.status(401).send();
   }
-  const transactions = await Transaction.find().sort({ time: -1 }).limit(10);
+  const transactions = await Transaction.find().sort({ time: -1 }); // LIMIT removed
   const total = transactions.reduce((acc, t) => acc + (t.amount || 0), 0);
   res.json({ totalIncome: total.toFixed(2), recentSales: transactions });
 });
