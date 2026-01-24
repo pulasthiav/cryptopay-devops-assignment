@@ -534,7 +534,8 @@
           </div>
           <div class="option-amount">Rs. <span id="nowLKR">0</span></div>
           <div class="option-sub">
-            ≈ <span id="nowCrypto">0</span> <span id="nowCoinSymbol"></span>
+            ≈ <span id="lblFullCrypto">0</span>
+            <span class="lblCoinSymbol"></span>
           </div>
         </div>
 
@@ -556,10 +557,15 @@
               >/mo</span
             >
           </div>
+          <div class="option-sub">
+            ≈ <span id="lblInstCrypto">0</span>
+            <span class="lblCoinSymbol"></span> /mo
+          </div>
           <div
-            id="scheduleList"
-            style="font-size: 12px; margin-top: 10px; color: var(--text-muted)"
-          ></div>
+            style="font-size: 12px; color: var(--text-muted); margin-top: 5px"
+          >
+            Next Payment: <span id="lblNextDate">...</span>
+          </div>
         </div>
 
         <button
@@ -911,30 +917,44 @@
           if (!res.ok) throw new Error();
           paymentData = await res.json();
 
-          // Fill Data
+          // QR Image Update
           document.getElementById('payCoinName').innerText =
             paymentData.coin.toUpperCase();
           document.getElementById('qrImage').src =
             `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Pay_${paymentData.coin}_${amt}`;
 
+          // LKR Amounts Update
           document.getElementById('nowLKR').innerText =
             paymentData.options.payNow.lkrTotal;
-          document.getElementById('nowCrypto').innerText =
-            paymentData.options.payNow.cryptoTotal;
-          document.getElementById('nowCoinSymbol').innerText =
-            paymentData.coin.toUpperCase();
-
           document.getElementById('instMonthly').innerText =
             paymentData.options.installments.monthlyPayment;
 
-          // Render Schedule Preview
-          const schedList = document.getElementById('scheduleList');
-          schedList.innerHTML = '';
-          paymentData.options.installments.schedule.forEach((item, i) => {
-            schedList.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-              <span>${item.date}</span> <span>Rs. ${item.amountLKR}</span>
-            </div>`;
-          });
+          // --- අලුත් කොටස: Crypto ගාණ Frontend එකේදීම හදනවා ---
+          const rate = paymentData.rate;
+
+          // 1. Pay Full Crypto Amount
+          const fullCrypto = (
+            paymentData.options.payNow.lkrTotal / rate
+          ).toFixed(6);
+          document.getElementById('lblFullCrypto').innerText = fullCrypto;
+
+          // 2. Installment Crypto Amount
+          const instCrypto = (
+            paymentData.options.installments.monthlyPayment / rate
+          ).toFixed(6);
+          document.getElementById('lblInstCrypto').innerText = instCrypto;
+
+          // 3. Coin Symbol (BTC/ETH etc.)
+          document
+            .querySelectorAll('.lblCoinSymbol')
+            .forEach((e) => (e.innerText = paymentData.coin.toUpperCase()));
+
+          // 4. Next Date Update
+          if (paymentData.options.installments.schedule.length > 1) {
+            document.getElementById('lblNextDate').innerText =
+              paymentData.options.installments.schedule[1].date;
+          }
+          // ----------------------------------------------------
 
           document.getElementById('loading-txt').style.display = 'none';
           showScreen('customer-screen');
