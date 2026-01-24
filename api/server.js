@@ -33,7 +33,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// --- Search API (මේක තමයි අඩුවෙලා තිබුනේ) ---
 app.get('/api/search', async (req, res) => {
   const query = req.query.q;
   if (!query) return res.json([]);
@@ -49,6 +48,7 @@ app.get('/api/search', async (req, res) => {
     }));
     res.json(coins);
   } catch (error) {
+    console.error(error); // හරි ගැස්සුවා: Error එක Print කළා
     res.status(500).json({ error: 'Search failed' });
   }
 });
@@ -102,3 +102,4 @@ app.get('/api/admin-stats', async (req, res) => {
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
+// වැදගත්: මේ පේළියට පස්සේ අනිවාර්යයෙන්ම හිස් පේළියක් (Enter) තියෙන්න ඕනේ.
