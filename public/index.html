@@ -506,31 +506,51 @@
       }
 
       async function searchCoins() {
-        const q = document.getElementById('coinSearch').value;
-        const resBox = document.getElementById('searchResults');
-        if(q.length < 2) { resBox.style.display='none'; return; }
-        
-        try {
-          const res = await fetch(`/api/search?q=${q}`);
-          const data = await res.json();
-          resBox.innerHTML = '';
-          resBox.style.display = 'block';
-          data.forEach(c => {
-            const div = document.createElement('div');
-            div.style.padding = '10px';
-            div.style.borderBottom = '1px solid var(--border-color)';
-            div.style.cursor = 'pointer';
-            div.style.display = 'flex'; div.style.alignItems = 'center'; div.style.gap = '10px';
-            div.innerHTML = `<img src="${c.thumb}" width="20"> <span>${c.name}</span>`;
-            div.onclick = () => {
-              quickSelect(c.id, { classList: { add: ()=>{} } }); // Fake element for quickSelect
-              document.getElementById('selName').innerText = c.name.toUpperCase();
-              resBox.style.display = 'none';
-              document.getElementById('coinSearch').value = '';
-            };
-            resBox.appendChild(div);
-          });
-        } catch(e) {}
+         const q = document.getElementById('coinSearch').value;
+         const resBox = document.getElementById('searchResults');
+         
+         // 1. කලින් පටන් ගත්ත search එකක් තියෙනවා නම් නවත්තනවා (Clear Timer)
+         clearTimeout(searchTimeout);
+
+         if(q.length < 2) { 
+             resBox.style.display='none'; 
+             return; 
+         }
+
+         // 2. User ට "Searching..." කියලා පෙන්නනවා (එතකොට හිරවෙලා නෑ කියලා තේරෙනවා)
+         resBox.style.display = 'block';
+         resBox.innerHTML = '<div style="padding:12px; color:#666; text-align:center;">⏳ Searching...</div>';
+
+         // 3. තත්පරයක් (1000ms) ඉඳලා තමයි API එකට කතා කරන්නේ.
+         // (මේකෙන් API එක Block වෙන එක නවතිනවා)
+         searchTimeout = setTimeout(async () => {
+             try {
+                const res = await fetch(`/api/search?q=${q}`);
+                if(!res.ok) throw new Error("API Error");
+                const data = await res.json();
+                
+                resBox.innerHTML = ''; 
+                
+                if(data.length === 0) {
+                    resBox.innerHTML = '<div style="padding:10px; text-align:center; color:gray;">No coins found</div>';
+                    return;
+                }
+
+                data.forEach(c => {
+                   resBox.innerHTML += `
+                   <div class="search-item" onclick="selectCoin('${c.id}', {classList:{add:()=>{}}}); document.getElementById('coinSearch').value='${c.name}'; document.getElementById('searchResults').style.display='none';">
+                        <img src="${c.thumb}" width="25" style="border-radius:50%"> 
+                        <div>
+                            <b>${c.name}</b> 
+                            <small style="text-transform:uppercase;">(${c.symbol})</small>
+                        </div>
+                   </div>`;
+                });
+             } catch(e){
+                 console.error("Search Error:", e);
+                 resBox.innerHTML = '<div style="padding:10px; text-align:center; color:red;">Connection Slow. Try again.</div>';
+             }
+         }, 1000); // <-- මෙන්න මෙතන 1000 කළාම system එක smooth වෙනවා
       }
 
       async function generateQR() {
