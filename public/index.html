@@ -115,6 +115,34 @@
       .data-table th { text-align: left; padding: 8px; border-bottom: 1px solid var(--border-color); color: var(--text-muted); }
       .data-table td { padding: 8px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
 
+      /* Search Results Styling (NEW FIX) */
+      #searchResults {
+        display: none;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        max-height: 200px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        background: var(--card-bg);
+        position: absolute; /* Ensures it floats on top */
+        width: calc(100% - 60px); /* Adjust width */
+        z-index: 1000; /* Force on top */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      }
+      .search-item {
+        padding: 12px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        transition: background 0.2s;
+        color: var(--text-main); /* Ensure text is visible */
+      }
+      .search-item:hover { background: rgba(59, 130, 246, 0.1); }
+      .search-item b { color: var(--text-main); }
+      .search-item small { color: var(--text-muted); }
+
       /* Screens & Receipt */
       .screen { display: none; animation: fadeIn 0.4s ease; }
       .screen.active { display: block; }
@@ -153,8 +181,10 @@
           <div class="coin-chip" onclick="selectCoin('tether', this)">USDT</div>
         </div>
 
-        <input type="text" id="coinSearch" placeholder="🔍 Search coins..." onkeyup="searchCoins()">
-        <div id="searchResults" style="display:none; border:1px solid var(--border-color); border-radius:8px; max-height:150px; overflow-y:auto; margin-bottom:10px;"></div>
+        <div style="position: relative;">
+            <input type="text" id="coinSearch" placeholder="🔍 Search coins (e.g. Doge)" onkeyup="searchCoins()">
+            <div id="searchResults"></div>
+        </div>
         
         <button class="btn btn-primary" onclick="generateQR()">Generate QR 🚀</button>
         
@@ -247,25 +277,59 @@
 
     <script>
       let selectedCoin = '', payData = {}, pendingPlan = '', allSales = [];
+      let searchTimeout;
 
       function selectCoin(id, el) {
          selectedCoin = id;
          document.querySelectorAll('.coin-chip').forEach(c => c.classList.remove('active'));
          el.classList.add('active');
+         // Clear Search if a chip is selected
+         document.getElementById('coinSearch').value = '';
+         document.getElementById('searchResults').style.display = 'none';
       }
 
+      // --- NEW: Better Search Function with Debounce & Symbols ---
       async function searchCoins() {
          const q = document.getElementById('coinSearch').value;
          const resBox = document.getElementById('searchResults');
-         if(q.length < 2) { resBox.style.display='none'; return; }
-         try {
-            const res = await fetch(`/api/search?q=${q}`);
-            const data = await res.json();
-            resBox.innerHTML = ''; resBox.style.display='block';
-            data.forEach(c => {
-               resBox.innerHTML += `<div style="padding:10px; cursor:pointer; border-bottom:1px solid var(--border-color); display:flex; gap:10px; align-items:center;" onclick="selectCoin('${c.id}', {classList:{add:()=>{}}}); document.getElementById('coinSearch').value=''; document.getElementById('searchResults').style.display='none';"><img src="${c.thumb}" width="20"> ${c.name}</div>`;
-            });
-         } catch(e){}
+         
+         // 1. Clear previous timer (Stop rapid requests)
+         clearTimeout(searchTimeout);
+
+         if(q.length < 2) { 
+             resBox.style.display='none'; 
+             return; 
+         }
+
+         // 2. Wait 500ms before calling API
+         searchTimeout = setTimeout(async () => {
+             try {
+                const res = await fetch(`/api/search?q=${q}`);
+                const data = await res.json();
+                
+                resBox.innerHTML = ''; 
+                resBox.style.display='block';
+                
+                if(data.length === 0) {
+                    resBox.innerHTML = '<div style="padding:10px; text-align:center; color:gray;">No coins found</div>';
+                    return;
+                }
+
+                data.forEach(c => {
+                   // Added Symbol Display: ${c.name} (${c.symbol})
+                   resBox.innerHTML += `
+                   <div class="search-item" onclick="selectCoin('${c.id}', {classList:{add:()=>{}}}); document.getElementById('coinSearch').value='${c.name}'; document.getElementById('searchResults').style.display='none';">
+                        <img src="${c.thumb}" width="25" style="border-radius:50%"> 
+                        <div>
+                            <b>${c.name}</b> 
+                            <small style="text-transform:uppercase;">(${c.symbol})</small>
+                        </div>
+                   </div>`;
+                });
+             } catch(e){
+                 console.error("Search Error:", e);
+             }
+         }, 500); // 500ms delay
       }
 
       async function generateQR() {
@@ -312,10 +376,9 @@
          if(res.status === 401) { alert('Wrong PIN'); return; }
          
          const data = await res.json();
-         allSales = data.recentSales; // Store ALL data here
+         allSales = data.recentSales;
          document.getElementById('revenueDisplay').innerText = data.totalIncome;
 
-         // Show only first 5 in the main list
          const list = document.getElementById('salesList');
          list.innerHTML = '';
          allSales.slice(0, 5).forEach(s => {
@@ -333,7 +396,6 @@
       function openHistoryTable() {
          const tbody = document.getElementById('historyBody');
          tbody.innerHTML = '';
-         // Show ALL data in table
          allSales.forEach(s => {
             tbody.innerHTML += `<tr>
                <td>${new Date(s.time).toLocaleString()}</td>
