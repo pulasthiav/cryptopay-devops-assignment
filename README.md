@@ -24,6 +24,7 @@ Live URL: https://cryptopay-devops-assignment.vercel.app/
 - DevOps & Tools: Docker, GitHub Actions, ESLint, Prettier
 - External APIs: CoinGecko API (for live crypto rates), QRServer API
 - Deployment Platform: Vercel
+- Database: MongoDB
 
 ## Features
 
