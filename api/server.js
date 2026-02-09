@@ -48,7 +48,7 @@ app.get('/api/search', async (req, res) => {
     }));
     res.json(coins);
   } catch (error) {
-    console.error(error); // හරි ගැස්සුවා: Error එක Print කළා
+    console.error(error);
     res.status(500).json({ error: 'Search failed' });
   }
 });
@@ -59,21 +59,34 @@ app.get('/api/calculate-payment', async (req, res) => {
     const response = await axios.get(
       `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=lkr`
     );
+
     const rate = response.data[coin].lkr;
 
-    const monthly = (amount * 1.1) / 3;
+    const payNowLKR = amount * 1.01;
+    const payNowCrypto = payNowLKR / rate;
+
+    const monthlyLKR = (amount * 1.1) / 3;
+    const monthlyCrypto = monthlyLKR / rate;
+
     const schedule = [
-      { date: 'Today', amountLKR: monthly.toFixed(2) },
-      { date: 'Month 2', amountLKR: monthly.toFixed(2) },
-      { date: 'Month 3', amountLKR: monthly.toFixed(2) },
+      { date: 'Today', amountLKR: monthlyLKR.toFixed(2) },
+      { date: 'Month 2', amountLKR: monthlyLKR.toFixed(2) },
+      { date: 'Month 3', amountLKR: monthlyLKR.toFixed(2) },
     ];
 
     res.json({
       coin,
       rate,
       options: {
-        payNow: { lkrTotal: (amount * 1.01).toFixed(2) },
-        installments: { monthlyPayment: monthly.toFixed(2), schedule },
+        payNow: {
+          lkrTotal: payNowLKR.toFixed(2),
+          cryptoTotal: payNowCrypto.toFixed(8),
+        },
+        installments: {
+          monthlyPayment: monthlyLKR.toFixed(2),
+          monthlyCrypto: monthlyCrypto.toFixed(8),
+          schedule,
+        },
       },
     });
   } catch (e) {
@@ -102,4 +115,3 @@ app.get('/api/admin-stats', async (req, res) => {
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
-// වැදගත්: මේ පේළියට පස්සේ අනිවාර්යයෙන්ම හිස් පේළියක් (Enter) තියෙන්න ඕනේ.

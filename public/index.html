@@ -1,18 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CryptoPOS | Secure Gateway</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       /* --- 1. MODERN VARIABLES (Fintech Palette) --- */
       :root {
         --font-family: 'Inter', sans-serif;
-        
+
         /* Light Mode */
         --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         --card-bg: rgba(255, 255, 255, 0.95);
@@ -23,7 +26,7 @@
         --primary-hover: #2563eb;
         --danger: #ef4444;
         --success: #10b981;
-        --shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+        --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
         --radius: 16px;
       }
 
@@ -36,12 +39,16 @@
         --border-color: #334155;
         --primary: #60a5fa;
         --primary-hover: #3b82f6;
-        --shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+        --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
       }
 
       /* --- 2. GLOBAL RESET --- */
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
       body {
         font-family: var(--font-family);
         background: var(--bg-gradient);
@@ -58,19 +65,25 @@
       /* --- 3. THEME TOGGLE --- */
       .theme-btn {
         position: fixed;
-        top: 20px; right: 20px;
+        top: 20px;
+        right: 20px;
         background: var(--card-bg);
         border: 1px solid var(--border-color);
-        width: 44px; height: 44px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         cursor: pointer;
         font-size: 20px;
-        display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         transition: 0.3s;
         z-index: 100;
       }
-      .theme-btn:hover { transform: scale(1.1); }
+      .theme-btn:hover {
+        transform: scale(1.1);
+      }
 
       /* --- 4. MAIN CARD CONTAINER --- */
       .app-container {
@@ -81,7 +94,7 @@
         -webkit-backdrop-filter: blur(20px);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 30px;
         position: relative;
         overflow: hidden;
@@ -91,8 +104,16 @@
         text-align: center;
         margin-bottom: 30px;
       }
-      .header h2 { font-size: 22px; font-weight: 700; color: var(--text-main); }
-      .header p { font-size: 14px; color: var(--text-muted); margin-top: 5px; }
+      .header h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-main);
+      }
+      .header p {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-top: 5px;
+      }
 
       /* --- 5. INPUTS & FORMS --- */
       label {
@@ -105,8 +126,11 @@
         letter-spacing: 0.5px;
       }
 
-      .input-wrapper { margin-bottom: 24px; position: relative; }
-      
+      .input-wrapper {
+        margin-bottom: 24px;
+        position: relative;
+      }
+
       /* Professional Big Input */
       .money-input-container {
         position: relative;
@@ -120,7 +144,7 @@
         font-weight: 600;
         color: var(--text-muted);
       }
-      input[type="number"] {
+      input[type='number'] {
         width: 100%;
         padding: 16px 16px 16px 50px; /* Space for symbol */
         font-size: 24px;
@@ -132,9 +156,13 @@
         transition: 0.2s;
         outline: none;
       }
-      input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+      input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
 
-      input[type="text"], input[type="password"] {
+      input[type='text'],
+      input[type='password'] {
         width: 100%;
         padding: 14px;
         background: transparent;
@@ -145,7 +173,9 @@
         outline: none;
         transition: 0.2s;
       }
-      input[type="text"]:focus { border-color: var(--primary); }
+      input[type='text']:focus {
+        border-color: var(--primary);
+      }
 
       /* --- 6. COIN SELECTOR (Chips) --- */
       .coin-grid {
@@ -166,7 +196,10 @@
         transition: all 0.2s ease;
         background: transparent;
       }
-      .coin-chip:hover { border-color: var(--primary); color: var(--primary); }
+      .coin-chip:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
       .coin-chip.active {
         background: var(--primary);
         color: white;
@@ -184,21 +217,30 @@
         cursor: pointer;
         border: none;
         transition: 0.2s;
-        display: flex; align-items: center; justify-content: center; gap: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
       }
       .btn-primary {
         background: var(--primary);
         color: white;
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
       }
-      .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
-      
+      .btn-primary:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+      }
+
       .btn-outline {
         background: transparent;
         border: 1px solid var(--border-color);
         color: var(--text-muted);
       }
-      .btn-outline:hover { background: var(--border-color); color: var(--text-main); }
+      .btn-outline:hover {
+        background: var(--border-color);
+        color: var(--text-main);
+      }
 
       .btn-text {
         background: none;
@@ -207,7 +249,10 @@
         margin-top: 15px;
         text-decoration: none;
       }
-      .btn-text:hover { color: var(--text-main); text-decoration: underline; }
+      .btn-text:hover {
+        color: var(--text-main);
+        text-decoration: underline;
+      }
 
       /* --- 8. PAYMENT OPTIONS CARDS --- */
       .option-card {
@@ -225,60 +270,129 @@
         border-color: var(--primary);
         background: rgba(59, 130, 246, 0.03);
       }
-      .option-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+      .option-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
       .badge {
-        font-size: 10px; font-weight: 700;
-        padding: 4px 8px; border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 20px;
         text-transform: uppercase;
       }
-      .badge-yellow { background: #fef3c7; color: #d97706; }
-      .badge-red { background: #fee2e2; color: #dc2626; }
-      
-      .option-amount { font-size: 22px; font-weight: 700; color: var(--text-main); }
-      .option-sub { font-size: 13px; color: var(--primary); font-weight: 500; }
+      .badge-yellow {
+        background: #fef3c7;
+        color: #d97706;
+      }
+      .badge-red {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .option-amount {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-main);
+      }
+      .option-sub {
+        font-size: 13px;
+        color: var(--primary);
+        font-weight: 500;
+      }
 
       /* --- 9. RECEIPT (Paper Effect) --- */
       #receipt-area {
         display: none;
-        background: white; /* Always white like paper */
-        color: #1e293b; /* Always dark text */
+        background: white;
+        color: #1e293b;
         padding: 30px;
         position: relative;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         margin-top: 20px;
       }
       /* Zigzag bottom effect */
       #receipt-area::after {
-        content: "";
+        content: '';
         position: absolute;
         bottom: -10px;
         left: 0;
         width: 100%;
         height: 10px;
-        background: radial-gradient(circle, transparent, transparent 50%, white 50%, white 100%) -7px -2px / 15px 15px repeat-x;
+        background: radial-gradient(
+            circle,
+            transparent,
+            transparent 50%,
+            white 50%,
+            white 100%
+          ) -7px -2px /
+          15px 15px repeat-x;
       }
-      .receipt-line { border-bottom: 1px dashed #cbd5e1; margin: 15px 0; }
-      
+      .receipt-line {
+        border-bottom: 1px dashed #cbd5e1;
+        margin: 15px 0;
+      }
+
       @media print {
-        body * { visibility: hidden; }
-        #receipt-area, #receipt-area * { visibility: visible; }
-        #receipt-area {
-          position: absolute; left: 0; top: 0; width: 100%;
-          box-shadow: none; margin: 0;
+        body * {
+          visibility: hidden;
         }
-        .no-print { display: none !important; }
+
+        #receipt-area,
+        #receipt-area * {
+          visibility: visible !important;
+          color: black !important;
+        }
+
+        #receipt-area {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          margin: 0;
+          padding: 20px;
+          background-color: white !important;
+          z-index: 9999;
+          display: block !important;
+        }
+
+        .no-print {
+          display: none !important;
+        }
       }
 
       /* --- 10. UTILS & ANIMATIONS --- */
-      .screen { display: none; animation: fadeIn 0.4s ease; }
-      .screen.active { display: block; }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      .screen {
+        display: none;
+        animation: fadeIn 0.4s ease;
+      }
+      .screen.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
       .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.6);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(4px);
-        display: none; justify-content: center; align-items: center;
+        display: none;
+        justify-content: center;
+        align-items: center;
         z-index: 1000;
       }
       .modal-content {
@@ -286,19 +400,22 @@
         padding: 30px;
         border-radius: 20px;
         text-align: center;
-        width: 90%; max-width: 340px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        width: 90%;
+        max-width: 340px;
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
         border: 1px solid var(--border-color);
       }
-      .hidden { display: none; }
+      .hidden {
+        display: none;
+      }
     </style>
   </head>
   <body>
-
     <button class="theme-btn" onclick="toggleTheme()">🌙</button>
 
     <div class="app-container">
-      
       <div id="seller-screen" class="screen active">
         <div class="header">
           <h2>Merchant Point</h2>
@@ -309,44 +426,107 @@
           <label>Enter Bill Amount</label>
           <div class="money-input-container">
             <span class="currency-symbol">Rs.</span>
-            <input type="number" id="billAmount" placeholder="0.00">
+            <input type="number" id="billAmount" placeholder="0.00" />
           </div>
         </div>
 
         <div class="input-wrapper">
           <label>Select Currency</label>
           <div class="coin-grid">
-            <div class="coin-chip" onclick="quickSelect('bitcoin', this)">BTC</div>
-            <div class="coin-chip" onclick="quickSelect('ethereum', this)">ETH</div>
-            <div class="coin-chip" onclick="quickSelect('solana', this)">SOL</div>
-            <div class="coin-chip" onclick="quickSelect('tether', this)">USDT</div>
+            <div class="coin-chip" onclick="quickSelect('bitcoin', this)">
+              BTC
+            </div>
+            <div class="coin-chip" onclick="quickSelect('ethereum', this)">
+              ETH
+            </div>
+            <div class="coin-chip" onclick="quickSelect('solana', this)">
+              SOL
+            </div>
+            <div class="coin-chip" onclick="quickSelect('tether', this)">
+              USDT
+            </div>
           </div>
-          <input type="text" id="coinSearch" placeholder="🔍 Search other coins (e.g. doge)" onkeyup="searchCoins()">
-          <div id="searchResults" style="background:var(--card-bg); border:1px solid var(--border-color); position:absolute; width:100%; z-index:10; max-height:150px; overflow-y:auto; display:none; border-radius:10px; margin-top:5px;"></div>
-          <div id="selName" style="color:var(--primary); font-size:12px; font-weight:600; margin-top:5px; height:15px;"></div>
+          <input
+            type="text"
+            id="coinSearch"
+            placeholder="🔍 Search other coins (e.g. doge)"
+            onkeyup="searchCoins()"
+          />
+          <div
+            id="searchResults"
+            style="
+              background: var(--card-bg);
+              border: 1px solid var(--border-color);
+              position: absolute;
+              width: 100%;
+              z-index: 10;
+              max-height: 150px;
+              overflow-y: auto;
+              display: none;
+              border-radius: 10px;
+              margin-top: 5px;
+            "
+          ></div>
+          <div
+            id="selName"
+            style="
+              color: var(--primary);
+              font-size: 12px;
+              font-weight: 600;
+              margin-top: 5px;
+              height: 15px;
+            "
+          ></div>
         </div>
 
         <button class="btn btn-primary" onclick="generateQR()">
           <span>Generate Payment QR</span> 🚀
         </button>
-        
+
         <center>
-          <p id="loading-txt" style="color:var(--primary); font-size:13px; font-weight:600; margin-top:15px; display:none;">
+          <p
+            id="loading-txt"
+            style="
+              color: var(--primary);
+              font-size: 13px;
+              font-weight: 600;
+              margin-top: 15px;
+              display: none;
+            "
+          >
             ⏳ Connecting to Blockchain...
           </p>
-          <button class="btn btn-text" onclick="openPassModal()">🔒 Admin Dashboard</button>
+          <button class="btn btn-text" onclick="openPassModal()">
+            🔒 Admin Dashboard
+          </button>
         </center>
       </div>
 
       <div id="customer-screen" class="screen">
         <div class="header">
           <h2>Complete Payment</h2>
-          <p>Scan to pay with <strong id="payCoinName" style="color:var(--primary)"></strong></p>
+          <p>
+            Scan to pay with
+            <strong id="payCoinName" style="color: var(--primary)"></strong>
+          </p>
         </div>
 
-        <center style="margin-bottom:20px;">
-          <div style="background:white; padding:10px; border-radius:16px; display:inline-block; border:1px solid #e2e8f0;">
-            <img id="qrImage" src="" width="160" style="display:block; border-radius:8px;">
+        <center style="margin-bottom: 20px">
+          <div
+            style="
+              background: white;
+              padding: 10px;
+              border-radius: 16px;
+              display: inline-block;
+              border: 1px solid #e2e8f0;
+            "
+          >
+            <img
+              id="qrImage"
+              src=""
+              width="160"
+              style="display: block; border-radius: 8px"
+            />
           </div>
         </center>
 
@@ -354,111 +534,291 @@
 
         <div class="option-card" onclick="askConfirmation('Pay Now')">
           <div class="option-header">
-            <span style="font-weight:600; font-size:15px;">Pay Full Amount</span>
+            <span style="font-weight: 600; font-size: 15px"
+              >Pay Full Amount</span
+            >
             <span class="badge badge-yellow">1% Fee</span>
           </div>
           <div class="option-amount">Rs. <span id="nowLKR">0</span></div>
-          <div class="option-sub">≈ <span id="nowCrypto">0</span> <span id="nowCoinSymbol"></span></div>
+          <div class="option-sub">
+            ≈ <span id="nowCrypto">0</span> <span id="nowCoinSymbol"></span>
+          </div>
         </div>
 
         <div class="option-card" onclick="askConfirmation('Installment')">
           <div class="option-header">
-            <span style="font-weight:600; font-size:15px;">3-Month Installment</span>
+            <span style="font-weight: 600; font-size: 15px"
+              >3-Month Installment</span
+            >
             <span class="badge badge-red">10% Fee</span>
           </div>
-          <div class="option-amount">Rs. <span id="instMonthly">0</span> <span style="font-size:14px; color:var(--text-muted); font-weight:400">/mo</span></div>
-          <div id="scheduleList" style="font-size:12px; margin-top:10px; color:var(--text-muted);"></div>
+          <div class="option-amount">
+            Rs. <span id="instMonthly">0</span>
+            <span
+              style="
+                font-size: 14px;
+                color: var(--text-muted);
+                font-weight: 400;
+              "
+              >/mo</span
+            >
+          </div>
+          <div class="option-sub">
+            ≈ <span id="instCrypto">0</span> <span id="instCoinSymbol"></span>
+          </div>
+          <div
+            id="scheduleList"
+            style="font-size: 12px; margin-top: 10px; color: var(--text-muted)"
+          ></div>
         </div>
 
-        <button class="btn btn-outline" onclick="location.reload()" style="color:var(--danger); border-color:var(--danger);">Cancel Transaction</button>
+        <button
+          class="btn btn-outline"
+          onclick="location.reload()"
+          style="color: var(--danger); border-color: var(--danger)"
+        >
+          Cancel Transaction
+        </button>
       </div>
 
       <div id="admin-screen" class="screen">
-        <div class="header" style="text-align:left; display:flex; justify-content:space-between; align-items:center;">
+        <div
+          class="header"
+          style="
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
           <h2>📊 Dashboard</h2>
-          <button onclick="location.reload()" style="background:none; border:none; color:var(--text-main); font-size:20px; cursor:pointer;">✕</button>
-        </div>
-        
-        <div style="background:linear-gradient(135deg, #1e293b, #0f172a); color:white; padding:25px; border-radius:16px; margin-bottom:20px;">
-          <span style="font-size:13px; opacity:0.8; text-transform:uppercase; letter-spacing:1px;">Total Revenue</span>
-          <h1 id="adminRevenue" style="font-size:36px; margin-top:5px;">0.00</h1>
-          <span style="font-size:12px; color:#4ade80;">● Live Updates</span>
+          <button
+            onclick="location.reload()"
+            style="
+              background: none;
+              border: none;
+              color: var(--text-main);
+              font-size: 20px;
+              cursor: pointer;
+            "
+          >
+            ✕
+          </button>
         </div>
 
-        <h4 style="margin-bottom:15px;">Recent Sales</h4>
-        <div id="salesList" style="max-height:200px; overflow-y:auto; font-size:14px;"></div>
-        
-        <button class="btn btn-outline" onclick="location.reload()" style="margin-top:20px;">Log Out</button>
+        <div
+          style="
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+          "
+        >
+          <span
+            style="
+              font-size: 13px;
+              opacity: 0.8;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+            "
+            >Total Revenue</span
+          >
+          <h1 id="adminRevenue" style="font-size: 36px; margin-top: 5px">
+            0.00
+          </h1>
+          <span style="font-size: 12px; color: #4ade80">● Live Updates</span>
+        </div>
+
+        <h4 style="margin-bottom: 15px">Recent Sales</h4>
+        <div
+          id="salesList"
+          style="max-height: 200px; overflow-y: auto; font-size: 14px"
+        ></div>
+
+        <button
+          class="btn btn-outline"
+          onclick="location.reload()"
+          style="margin-top: 20px"
+        >
+          Log Out
+        </button>
       </div>
 
       <div id="receipt-area">
         <center>
-          <div style="border:2px solid #1e293b; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;">
-            <span style="font-size:20px;">✔</span>
+          <div
+            style="
+              border: 2px solid #1e293b;
+              border-radius: 50%;
+              width: 40px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-bottom: 10px;
+            "
+          >
+            <span style="font-size: 20px">✔</span>
           </div>
-          <h3 style="margin:0; font-weight:800; letter-spacing:-0.5px;">PAYMENT SUCCESS</h3>
-          <p style="font-size:12px; color:#64748b; margin-bottom:15px;">TRANSACTION ID: #TXN8829</p>
+          <h3 style="margin: 0; font-weight: 800; letter-spacing: -0.5px">
+            PAYMENT SUCCESS
+          </h3>
+          <p style="font-size: 12px; color: #64748b; margin-bottom: 15px">
+            TRANSACTION ID: #TXN8829
+          </p>
         </center>
-        
+
         <div class="receipt-line"></div>
-        
-        <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:8px;">
-          <span style="color:#64748b;">Date</span>
-          <span style="font-weight:600;" id="rDate"></span>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+          "
+        >
+          <span style="color: #64748b">Date</span>
+          <span style="font-weight: 600" id="rDate"></span>
         </div>
-        <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:8px;">
-          <span style="color:#64748b;">Original Amount</span>
-          <span style="font-weight:600;">Rs. <span id="rOriginal"></span></span>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+          "
+        >
+          <span style="color: #64748b">Original Amount</span>
+          <span style="font-weight: 600">Rs. <span id="rOriginal"></span></span>
         </div>
 
-        <div id="receipt-schedule" style="background:#f1f5f9; padding:10px; border-radius:8px; margin:15px 0; font-size:13px;"></div>
+        <div
+          id="receipt-schedule"
+          style="
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 13px;
+          "
+        ></div>
 
-        <div style="display:flex; justify-content:space-between; font-size:18px; font-weight:800; margin-top:10px;">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 800;
+            margin-top: 10px;
+          "
+        >
           <span>PAID NOW</span>
           <span>Rs. <span id="rPaidNow"></span></span>
         </div>
-        
-        <div class="no-print" style="margin-top:25px; text-align:center;">
-          <button class="btn btn-primary" onclick="window.print()" style="margin-bottom:10px;">🖨️ Print Receipt</button>
-          <a onclick="location.reload()" style="cursor:pointer; font-size:13px; color:var(--primary); text-decoration:underline;">Start New Order</a>
+
+        <div class="no-print" style="margin-top: 25px; text-align: center">
+          <button
+            class="btn btn-primary"
+            onclick="window.print()"
+            style="margin-bottom: 10px"
+          >
+            🖨️ Print Receipt
+          </button>
+          <a
+            onclick="location.reload()"
+            style="
+              cursor: pointer;
+              font-size: 13px;
+              color: var(--primary);
+              text-decoration: underline;
+            "
+            >Start New Order</a
+          >
         </div>
       </div>
-
     </div>
 
     <div id="custom-alert" class="modal-overlay">
       <div class="modal-content">
-        <div style="font-size:40px; margin-bottom:10px;">⚠️</div>
-        <h3 id="alert-title" style="margin-bottom:5px;">Notice</h3>
-        <p id="alert-msg" style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">Message</p>
+        <div style="font-size: 40px; margin-bottom: 10px">⚠️</div>
+        <h3 id="alert-title" style="margin-bottom: 5px">Notice</h3>
+        <p
+          id="alert-msg"
+          style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px"
+        >
+          Message
+        </p>
         <button class="btn btn-outline" onclick="closeAlert()">Okay</button>
       </div>
     </div>
 
     <div id="password-modal" class="modal-overlay">
       <div class="modal-content">
-        <h3 style="margin-bottom:5px;">Admin Login</h3>
-        <p style="color:var(--text-muted); font-size:13px; margin-bottom:15px;">Enter security PIN to access revenue</p>
-        <input type="password" id="adminPassInput" placeholder="PIN Code" style="text-align:center; margin-bottom:15px;">
-        <div style="display:flex; gap:10px;">
-          <button class="btn btn-outline" onclick="closePassModal()">Cancel</button>
-          <button class="btn btn-primary" onclick="submitPassword()">Access</button>
+        <h3 style="margin-bottom: 5px">Admin Login</h3>
+        <p
+          style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px"
+        >
+          Enter security PIN to access revenue
+        </p>
+        <input
+          type="password"
+          id="adminPassInput"
+          placeholder="PIN Code"
+          style="text-align: center; margin-bottom: 15px"
+          onkeypress="if (event.key === 'Enter') submitPassword();"
+        />
+        <div style="display: flex; gap: 10px">
+          <button class="btn btn-outline" onclick="closePassModal()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="submitPassword()">
+            Access
+          </button>
         </div>
       </div>
     </div>
 
     <div id="confirm-modal" class="modal-overlay">
       <div class="modal-content">
-        <h3 style="margin-bottom:5px;">Confirm?</h3>
-        <p id="confirm-msg" style="color:var(--text-muted); font-size:14px; margin-bottom:15px;">Proceed with this transaction?</p>
-        <div style="background:var(--bg-gradient); padding:10px; border-radius:8px; margin-bottom:20px;">
-          <div style="font-size:12px; color:var(--text-muted);">AMOUNT TO PAY</div>
-          <div style="font-size:20px; font-weight:700; color:var(--primary);">Rs. <span id="conf-amount"></span></div>
-          <div style="font-size:12px; margin-top:5px; font-weight:600;" id="conf-plan"></div>
+        <h3 style="margin-bottom: 5px">Confirm?</h3>
+        <p
+          id="confirm-msg"
+          style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px"
+        >
+          Proceed with this transaction?
+        </p>
+        <div
+          style="
+            background: var(--bg-gradient);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+          "
+        >
+          <div style="font-size: 12px; color: var(--text-muted)">
+            AMOUNT TO PAY
+          </div>
+          <div style="font-size: 20px; font-weight: 700; color: var(--primary)">
+            Rs. <span id="conf-amount"></span>
+          </div>
+          <div
+            style="font-size: 12px; margin-top: 5px; font-weight: 600"
+            id="conf-plan"
+          ></div>
         </div>
-        <div style="display:flex; gap:10px;">
-          <button class="btn btn-outline" onclick="closeConfirmModal()">Back</button>
-          <button class="btn btn-primary" onclick="executeTransaction()">Confirm Pay</button>
+        <div style="display: flex; gap: 10px">
+          <button class="btn btn-outline" onclick="closeConfirmModal()">
+            Back
+          </button>
+          <button
+            id="confirmBtn"
+            class="btn btn-primary"
+            onclick="executeTransaction()"
+          >
+            Confirm Pay
+          </button>
         </div>
       </div>
     </div>
@@ -468,7 +828,9 @@
       function toggleTheme() {
         document.body.classList.toggle('dark-mode');
         const btn = document.querySelector('.theme-btn');
-        btn.innerHTML = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        btn.innerHTML = document.body.classList.contains('dark-mode')
+          ? '☀️'
+          : '🌙';
       }
 
       // 2. STATE
@@ -478,9 +840,12 @@
 
       // 3. UI HELPERS
       function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        document
+          .querySelectorAll('.screen')
+          .forEach((el) => el.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(id === 'seller-screen') document.getElementById('receipt-area').style.display = 'none';
+        if (id === 'seller-screen')
+          document.getElementById('receipt-area').style.display = 'none';
       }
 
       function showAlert(title, msg) {
@@ -488,19 +853,25 @@
         document.getElementById('alert-msg').innerText = msg;
         document.getElementById('custom-alert').style.display = 'flex';
       }
-      function closeAlert() { document.getElementById('custom-alert').style.display = 'none'; }
+      function closeAlert() {
+        document.getElementById('custom-alert').style.display = 'none';
+      }
 
-      function openPassModal() { 
+      function openPassModal() {
         document.getElementById('password-modal').style.display = 'flex';
         document.getElementById('adminPassInput').value = '';
         document.getElementById('adminPassInput').focus();
       }
-      function closePassModal() { document.getElementById('password-modal').style.display = 'none'; }
+      function closePassModal() {
+        document.getElementById('password-modal').style.display = 'none';
+      }
 
       // 4. CORE FUNCTIONS
       function quickSelect(id, el) {
         selectedCoinId = id;
-        document.querySelectorAll('.coin-chip').forEach(c => c.classList.remove('active'));
+        document
+          .querySelectorAll('.coin-chip')
+          .forEach((c) => c.classList.remove('active'));
         el.classList.add('active');
         document.getElementById('selName').innerText = id.toUpperCase();
       }
@@ -508,54 +879,75 @@
       async function searchCoins() {
         const q = document.getElementById('coinSearch').value;
         const resBox = document.getElementById('searchResults');
-        if(q.length < 2) { resBox.style.display='none'; return; }
-        
+        if (q.length < 2) {
+          resBox.style.display = 'none';
+          return;
+        }
+
         try {
           const res = await fetch(`/api/search?q=${q}`);
           const data = await res.json();
           resBox.innerHTML = '';
           resBox.style.display = 'block';
-          data.forEach(c => {
+          data.forEach((c) => {
             const div = document.createElement('div');
             div.style.padding = '10px';
             div.style.borderBottom = '1px solid var(--border-color)';
             div.style.cursor = 'pointer';
-            div.style.display = 'flex'; div.style.alignItems = 'center'; div.style.gap = '10px';
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.gap = '10px';
             div.innerHTML = `<img src="${c.thumb}" width="20"> <span>${c.name}</span>`;
             div.onclick = () => {
-              quickSelect(c.id, { classList: { add: ()=>{} } }); // Fake element for quickSelect
-              document.getElementById('selName').innerText = c.name.toUpperCase();
+              quickSelect(c.id, { classList: { add: () => {} } }); // Fake element for quickSelect
+              document.getElementById('selName').innerText =
+                c.name.toUpperCase();
               resBox.style.display = 'none';
               document.getElementById('coinSearch').value = '';
             };
             resBox.appendChild(div);
           });
-        } catch(e) {}
+        } catch (e) {}
       }
 
       async function generateQR() {
         const amt = document.getElementById('billAmount').value;
-        if(!amt || amt <= 0) return showAlert("Error", "Please enter a valid amount.");
-        if(!selectedCoinId) return showAlert("Error", "Please select a cryptocurrency.");
+        if (!amt || amt <= 0)
+          return showAlert('Error', 'Please enter a valid amount.');
+        if (!selectedCoinId)
+          return showAlert('Error', 'Please select a cryptocurrency.');
 
         document.getElementById('loading-txt').style.display = 'block';
-        
+
         try {
-          const res = await fetch(`/api/calculate-payment?amount=${amt}&coin=${selectedCoinId}`);
-          if(!res.ok) throw new Error();
+          const res = await fetch(
+            `/api/calculate-payment?amount=${amt}&coin=${selectedCoinId}`
+          );
+          if (!res.ok) throw new Error();
           paymentData = await res.json();
 
           // Fill Data
-          document.getElementById('payCoinName').innerText = paymentData.coin.toUpperCase();
-          document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Pay_${paymentData.coin}_${amt}`;
-          
-          document.getElementById('nowLKR').innerText = paymentData.options.payNow.lkrTotal;
-          document.getElementById('nowCrypto').innerText = paymentData.options.payNow.cryptoTotal;
-          document.getElementById('nowCoinSymbol').innerText = paymentData.coin.toUpperCase();
-          
-          document.getElementById('instMonthly').innerText = paymentData.options.installments.monthlyPayment;
-          
-          // Render Schedule Preview
+          document.getElementById('payCoinName').innerText =
+            paymentData.coin.toUpperCase();
+          document.getElementById('qrImage').src =
+            `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Pay_${paymentData.coin}_${amt}`;
+
+          document.getElementById('nowLKR').innerText =
+            paymentData.options.payNow.lkrTotal;
+          document.getElementById('nowCrypto').innerText =
+            paymentData.options.payNow.cryptoTotal;
+          document.getElementById('nowCoinSymbol').innerText =
+            paymentData.coin.toUpperCase();
+
+          document.getElementById('instMonthly').innerText =
+            paymentData.options.installments.monthlyPayment;
+
+          document.getElementById('instCrypto').innerText =
+            paymentData.options.installments.monthlyCrypto;
+          document.getElementById('instCoinSymbol').innerText =
+            paymentData.coin.toUpperCase();
+          // -------------------------------------------------------------
+
           const schedList = document.getElementById('scheduleList');
           schedList.innerHTML = '';
           paymentData.options.installments.schedule.forEach((item, i) => {
@@ -566,67 +958,90 @@
 
           document.getElementById('loading-txt').style.display = 'none';
           showScreen('customer-screen');
-
-        } catch(e) {
+        } catch (e) {
+          console.error(e);
           document.getElementById('loading-txt').style.display = 'none';
-          showAlert("Connection Error", "Could not reach server.");
+          showAlert('Connection Error', 'Could not reach server.');
         }
       }
 
       function askConfirmation(plan) {
         pendingPlan = plan;
         const isInst = plan === 'Installment';
-        const amt = isInst ? paymentData.options.installments.monthlyPayment : paymentData.options.payNow.lkrTotal;
-        
+        const amt = isInst
+          ? paymentData.options.installments.monthlyPayment
+          : paymentData.options.payNow.lkrTotal;
+
         document.getElementById('conf-amount').innerText = amt;
-        document.getElementById('conf-plan').innerText = isInst ? '3-Month Plan (1st Installment)' : 'One-time Full Payment';
+        document.getElementById('conf-plan').innerText = isInst
+          ? '3-Month Plan (1st Installment)'
+          : 'One-time Full Payment';
         document.getElementById('confirm-modal').style.display = 'flex';
       }
 
-      function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; }
+      function closeConfirmModal() {
+        document.getElementById('confirm-modal').style.display = 'none';
+      }
 
       async function executeTransaction() {
+        const btn = document.getElementById('confirmBtn');
+        btn.disabled = true;
+        btn.innerText = 'Processing...';
+
         const isInst = pendingPlan === 'Installment';
-        const paidAmount = isInst ? paymentData.options.installments.monthlyPayment : paymentData.options.payNow.lkrTotal;
-        
-        await fetch(`/api/record-sale?amount=${paidAmount}&coin=${paymentData.coin}&plan=${pendingPlan}`);
-        
-        // Receipt Data
-        document.getElementById('rDate').innerText = new Date().toLocaleDateString();
-        document.getElementById('rOriginal').innerText = document.getElementById('billAmount').value;
+        const paidAmount = isInst
+          ? paymentData.options.installments.monthlyPayment
+          : paymentData.options.payNow.lkrTotal;
+
+        await fetch(
+          `/api/record-sale?amount=${paidAmount}&coin=${paymentData.coin}&plan=${pendingPlan}`
+        );
+
+        document.getElementById('rDate').innerText =
+          new Date().toLocaleDateString();
+        document.getElementById('rOriginal').innerText =
+          document.getElementById('billAmount').value;
         document.getElementById('rPaidNow').innerText = paidAmount;
-        
+
         const recArea = document.getElementById('receipt-schedule');
-        if(isInst) {
-          recArea.innerHTML = '<strong>PLAN: 3-MONTH INSTALLMENT</strong><br><br>';
+        if (isInst) {
+          recArea.innerHTML =
+            '<strong>PLAN: 3-MONTH INSTALLMENT</strong><br><br>';
           paymentData.options.installments.schedule.forEach((item, i) => {
             recArea.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-              <span>${item.date}</span> <span>Rs. ${item.amountLKR} ${i===0?'(PAID)':''}</span>
+              <span>${item.date}</span> <span>Rs. ${item.amountLKR} ${i === 0 ? '(PAID)' : ''}</span>
             </div>`;
           });
         } else {
-          recArea.innerHTML = '<strong>METHOD: FULL PAYMENT</strong><br>Status: Complete';
+          recArea.innerHTML =
+            '<strong>METHOD: FULL PAYMENT</strong><br>Status: Complete';
         }
 
         closeConfirmModal();
         document.getElementById('customer-screen').classList.remove('active');
         document.getElementById('receipt-area').style.display = 'block';
+
+        btn.disabled = false;
+        btn.innerText = 'Confirm Pay';
       }
 
       async function submitPassword() {
         const pw = document.getElementById('adminPassInput').value;
-        const res = await fetch('/api/admin-stats', { headers: { 'x-admin-password': pw } });
-        
-        if(res.status === 401) {
-          alert('Wrong PIN'); return;
+        const res = await fetch('/api/admin-stats', {
+          headers: { 'x-admin-password': pw },
+        });
+
+        if (res.status === 401) {
+          alert('Wrong PIN');
+          return;
         }
-        
+
         const data = await res.json();
         document.getElementById('adminRevenue').innerText = data.totalIncome;
-        
+
         const list = document.getElementById('salesList');
         list.innerHTML = '';
-        data.recentSales.forEach(s => {
+        data.recentSales.forEach((s) => {
           list.innerHTML += `<div style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between;">
             <div>
               <div style="font-weight:bold;">${s.coin.toUpperCase()}</div>
