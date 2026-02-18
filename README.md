@@ -161,7 +161,3 @@ Jobs & Steps:
 
 1.  Checkout: Retrieves the latest production-ready code.
 2.  Vercel Deployment: Uses the `amondnet/vercel-action` to automatically deploy the application to Vercel's production environment.
-
-```
-
-```
