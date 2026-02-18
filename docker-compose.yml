@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # --- Frontend Service (Nginx) ---
+  frontend:
+    image: nginx:alpine
+    container_name: cryptopay-frontend
+    ports:
+      - '80:80'
+    volumes:
+      - ./public:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+    networks:
+      - crypto-network
+
+    # --- Security & Read-Only Fix ---
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 128M
+
+  # --- Backend Service (Node.js API) ---
+  backend:
+    build: .
+    container_name: cryptopay-backend
+    expose:
+      - '3001'
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/cryptopos
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - PORT=3001
+    depends_on:
+      - mongo
+    networks:
+      - crypto-network
+    restart: on-failure
+
+    # --- Security Hardening ---
+    read_only: true
+    user: node
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    tmpfs:
+      - /tmp
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+
+  # --- Database Service (MongoDB) ---
+  mongo:
+    image: mongo:6.0
+    container_name: cryptopay-db
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - crypto-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+
+volumes:
+  mongo-data:
+
+networks:
+  crypto-network:
+    driver: bridge
