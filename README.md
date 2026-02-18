@@ -25,6 +25,8 @@ Live URL: https://cryptopay-devops-assignment.vercel.app/
 - External APIs: CoinGecko API (for live crypto rates), QRServer API
 - Deployment Platform: Vercel
 - Database: MongoDB
+- Container Orchestration: Docker Compose
+- Security Policies: Immutable Infrastructure (Read-only FS), Principle of Least Privilege (Non-root users)
 
 ## Features
 
@@ -43,6 +45,9 @@ Live URL: https://cryptopay-devops-assignment.vercel.app/
 - Automated Code Quality: Integrated ESLint and Prettier to automatically enforce code standards and formatting on every commit.
 - Docker Containerization: Application includes a Dockerfile and is fully containerized, exposing port 3001.
 - Advanced CI/CD: Pipeline includes automated steps for Linting, Docker Build validation, and Vercel Deployment.
+- Multi-Container Orchestration: Orchestrated a three-tier architecture (Nginx, Node.js, MongoDB) using Docker Compose for environment consistency.
+- Advanced Container Security: Hardened containers with read-only filesystems and `tmpfs` to minimize the attack surface.
+- Image Optimization: Leveraged multi-stage builds and Alpine-based images to reduce image size and improve deployment speed.
 
 ## Branch Strategy
 
@@ -61,6 +66,9 @@ We implemented the following branching strategy in accordance with industry best
 - Repository Management: Initialized the Git repository, configured .gitignore, and managed branch protection rules.
 - Conflict Resolution: Successfully resolved merge conflicts between feature branches and the develop branch (documented in git history).
 - Leadership & Support: Coordinated the team, managed code integrations, and provided technical support for both frontend and backend tasks.
+- Infrastructure Design: Architected the multi-service stack using Docker Compose with dedicated bridge networking.
+- Security Implementation: Configured non-root user execution and environment-based secrets management.
+- Technical Troubleshooting: Resolved critical Docker networking issues and UI layout bugs in containerized environments.
 
 ### Savisara Dissanayake
 
@@ -81,6 +89,8 @@ We implemented the following branching strategy in accordance with industry best
 - Node.js (version 18 or higher)
 - Git
 - npm (Node Package Manager)
+- Docker Desktop (version 4.x or higher)
+- Docker Compose
 
 ### Installation
 
@@ -112,6 +122,21 @@ docker build -t cryptopay-app .
 # Run the container
 docker run -p 3001:3001 cryptopay-app
 ```
+
+### Run with Docker Compose (Recommended for Full Stack)
+
+Since the application requires a database and backend connection, using Docker Compose is the best method.
+
+1. **Create Environment File:**
+   Create a `.env` file in the root directory and add your secret:
+   ```env
+   ADMIN_PASSWORD=your_secure_pin
+   ```
+2. **Launch the Stack:**
+   ```bash
+   docker-compose up --build
+   ```
+   The application will be accessible at http://localhost.
 
 ## CI/CD Pipeline & Deployment Strategy
 

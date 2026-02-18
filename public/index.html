@@ -336,29 +336,48 @@
       }
 
       @media print {
-        body * {
-          visibility: hidden;
+        body > *:not(.app-container) {
+          display: none !important;
         }
 
-        #receipt-area,
-        #receipt-area * {
-          visibility: visible !important;
-          color: black !important;
+        .app-container > *:not(#receipt-area) {
+          display: none !important;
+        }
+
+        body {
+          background: white !important;
+          margin: 0 !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: flex-start !important;
+        }
+
+        .app-container {
+          box-shadow: none !important;
+          border: none !important;
+          background: white !important;
+          width: 100% !important;
+          max-width: 600px !important;
+          margin: 0 auto !important;
+          padding: 0 !important;
         }
 
         #receipt-area {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          margin: 0;
-          padding: 20px;
-          background-color: white !important;
-          z-index: 9999;
           display: block !important;
+          visibility: visible !important;
+          padding: 40px !important;
+          background: white !important;
         }
 
-        .no-print {
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          color: black !important;
+        }
+
+        .no-print,
+        .btn,
+        .theme-btn {
           display: none !important;
         }
       }
@@ -409,6 +428,9 @@
       }
       .hidden {
         display: none;
+      }
+      #custom-alert {
+        z-index: 9999 !important;
       }
     </style>
   </head>
@@ -1027,35 +1049,54 @@
 
       async function submitPassword() {
         const pw = document.getElementById('adminPassInput').value;
-        const res = await fetch('/api/admin-stats', {
-          headers: { 'x-admin-password': pw },
-        });
 
-        if (res.status === 401) {
-          alert('Wrong PIN');
-          return;
+        if (!pw) return;
+
+        try {
+          const res = await fetch('/api/admin-stats', {
+            headers: { 'x-admin-password': pw },
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+
+            const income = data.totalRevenue || data.totalIncome || 0;
+            document.getElementById('adminRevenue').innerText =
+              'Rs. ' + parseFloat(income).toLocaleString();
+
+            const list = document.getElementById('salesList');
+            list.innerHTML = '';
+
+            if (data.recentSales && data.recentSales.length > 0) {
+              data.recentSales.forEach((s) => {
+                list.innerHTML += `<div style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between;">
+                        <div>
+                          <div style="font-weight:bold;">${s.coin.toUpperCase()}</div>
+                          <div style="font-size:11px; opacity:0.7;">${new Date(s.time).toLocaleTimeString()}</div>
+                        </div>
+                        <div style="text-align:right;">
+                          <div>Rs. ${s.amount}</div>
+                          <div style="font-size:11px; opacity:0.7;">${s.plan}</div>
+                        </div>
+                      </div>`;
+              });
+            } else {
+              list.innerHTML =
+                '<div style="padding:10px; opacity:0.5;">No sales yet.</div>';
+            }
+
+            closePassModal();
+            showScreen('admin-screen');
+
+            document.getElementById('adminPassInput').value = '';
+          } else {
+            showAlert('Access Denied 🔒', 'Wrong PIN! Please try again.');
+            document.getElementById('adminPassInput').value = '';
+          }
+        } catch (err) {
+          console.error(err);
+          showAlert('System Error', 'Could not connect to server.');
         }
-
-        const data = await res.json();
-        document.getElementById('adminRevenue').innerText = data.totalIncome;
-
-        const list = document.getElementById('salesList');
-        list.innerHTML = '';
-        data.recentSales.forEach((s) => {
-          list.innerHTML += `<div style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between;">
-            <div>
-              <div style="font-weight:bold;">${s.coin.toUpperCase()}</div>
-              <div style="font-size:11px; opacity:0.7;">${new Date(s.time).toLocaleTimeString()}</div>
-            </div>
-            <div style="text-align:right;">
-              <div>Rs. ${s.amount}</div>
-              <div style="font-size:11px; opacity:0.7;">${s.plan}</div>
-            </div>
-          </div>`;
-        });
-
-        closePassModal();
-        showScreen('admin-screen');
       }
     </script>
   </body>
