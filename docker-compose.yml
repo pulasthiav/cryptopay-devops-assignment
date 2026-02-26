@@ -40,7 +40,8 @@ services:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - PORT=3001
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
       - crypto-network
     restart: on-failure
@@ -66,12 +67,15 @@ services:
   mongo:
     image: mongo:6.0
     container_name: cryptopay-db
-    ports:
-      - '27017:27017'
     volumes:
       - mongo-data:/data/db
     networks:
       - crypto-network
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     deploy:
       resources:
         limits:
